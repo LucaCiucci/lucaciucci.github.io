@@ -19,7 +19,7 @@ body     {
 /* styling our header */
 header   {
   /*background: #222;*/
-  background-image: linear-gradient(to top, #2B2B2B, black, #2B2B2B);
+  background-image: linear-gradient(to top, grey, black, black, black, black);
   color: #FFF;
   padding: 20px 30px;
 }
