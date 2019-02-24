@@ -63,12 +63,12 @@ nav ul li a    {
   transition: 0.3s ease all;
 }
 nav ul li a:hover   {
-  /*background: #444;*/
-  background-image: radial-gradient(MidnightBlue, MidnightBlue, black);
-  border-radius: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: silver;
+  background: #444;
+  /*background-image: radial-gradient(MidnightBlue, MidnightBlue, #444);
+  border-radius: 3px;
+  /*border-style: solid;
+  border-width: 1px;*/
+  border-color: #444;
 }
 
 /* styling our footer */
