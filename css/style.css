@@ -1,0 +1,321 @@
+
+/*
+================================================================
+                             VARS
+================================================================
+*/
+
+:root {
+    --theme_transition: 1s ease-in-out;
+
+    /*
+    rules for the size of the content:
+      - by default it is 95% of the screen size (I don't remenber why)
+      - but the size is vinculated in the range [page_min_width, page_max_width]
+    */
+    --content_width:         95vw;
+    --content_max_width:    90em;
+    --content_min_width:    30em;
+}
+
+body {
+    --body_bg_color : rgb(30, 30, 30);
+
+    --paper_color: hsla(0, 0%, 0%, 0.9);/*con questo ci vuole il bordo*/
+    --paper_color: hsla(0, 0%, 10%, 0.9);
+
+    --text_color: rgb(200, 200, 200);
+
+    --h1_color: rgb(0, 255, 255);
+    --h2_color: rgb(0, 128, 128);
+
+    /*--background_image_url: url("/img/intero.png");*/
+    --background_image_url: url("/img/intero_blur.webp");
+
+    --navbox_top_color: rgb(0, 128, 128);
+}
+body.light-mode {
+    --body_bg_color : white;
+
+    --paper_color: hsla(0, 0%, 100%, 0.85);
+
+    --text_color: hsl(0, 0%, 10%);
+
+    --h1_color: rgb(0, 128, 255);
+    --h2_color: rgb(0, 128, 200);
+
+    /*--background_image_url: url("/img/ritagliata_sere.jpg");*/
+    --background_image_url: url("/img/ritagliata_sere_blur.webp");
+
+    --navbox_top_color: rgb(0, 200, 255);
+}
+
+
+/*
+================================================================
+                           DOCUMENT
+================================================================
+*/
+
+body {
+    min-height: 100vh;
+    margin: 0; /*because the default for body is 8*/
+
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    background-color: var(--body_bg_color);
+
+    color: var(--text_color);
+}
+
+h1 {
+    color: var(--h1_color);
+    transition: color var(--theme_color_transition);
+}
+
+h2, h3, h4, h5, h6 {
+    color: var(--h2_color);
+    transition: color var(--theme_color_transition);
+}
+
+#fixed-bg-image {
+    z-index: -2;
+    position: fixed;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-image: var(--background_image_url);
+
+    /*filter: blur(4px);*/
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#topnav {
+    order: -1;
+
+    /*position: sticky;*/
+    /*position: initial; da mettere sotto quando lo schermo è piccolo */ /*!?!?!?!?1*/
+    top: 0;
+
+    font-size: 125%;
+
+    border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#topnav.go-over {
+    position: absolute;
+    width: 100%;
+}
+
+#topnav > a.active {
+    background-color: rgb(100, 100, 100);
+}
+
+#topnav > a:hover {
+    background: rgb(220, 220, 220);
+    color: black;
+}
+
+#footer {
+    order: 99;
+    margin-top: auto;
+
+    border-top: 1px solid rgba(128, 128, 128, 0.5);
+
+    padding: 2em;
+}
+
+#footer, #topnav {
+    background-color: var(--paper_color);
+}
+
+.content {
+    width: var(--content_width);
+    min-width: var(--content_min_width);
+    max-width: var(--content_max_width);
+    margin-left: auto;
+    margin-right: auto;
+
+    /*background-color: rebeccapurple;*/
+    /*background-color:hsl(276, 100%, 15%);*/
+}
+
+.cover {
+    height: 100vh;
+}
+
+.cover > h1 {
+    position: relative;
+    top: 50%;
+    transform: translate(0, -50%);
+
+    /*font-size: 8vw;*/
+    /*font-size: 8vh;*/
+    font-size: 500%;
+    text-align: center;
+
+    border: 0.05em solid var(--text_color);
+    border-radius: 0.25em;
+
+    max-width: 12em;
+    margin-left: auto;
+    margin-right: auto;
+
+    color: inherit;
+}
+
+.content > section {
+    display: flex;
+    gap: 1em;
+    border-top: solid 1px var(--text_color);
+    padding-top: 0.5em;
+
+    align-items: flex-start;/*to make stiky sidebar work*/
+}
+
+.sidebar {
+    flex-basis: 15%;
+    flex-grow: 0;
+    flex-shrink: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    position: sticky;
+    top: 0;
+
+    /*background: red;*/
+}
+
+.navbox {
+    background-color: var(--paper_color);
+    border-top: 4px solid var(--navbox_top_color);
+    border-radius: 0.5em;
+
+    padding: 1em;
+}
+
+.article {
+    /*background: blue;*/
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    flex-basis: 0%;
+    flex-grow: 1;
+
+    font-size: 110%;
+}
+
+.content a:link, .content a:visited,
+.article a:link, .article a:visited,
+.markdown-body a {
+    color: cornflowerblue;
+    transition: color var(--theme_color_transition);
+}
+.markdown-body a {
+    text-decoration: none;
+}
+
+.article-page {
+    background-color: var(--paper_color);
+
+    border: solid 1px rgba(128, 128, 128, 0.5);
+    border-radius: 1em;
+    padding: 1.5em;
+}
+
+.article h1 {
+    text-align: center;
+    font-size: 250%;
+}
+
+.article h1 {
+    counter-reset: section;
+}
+
+.article h2 {
+    counter-increment: section;
+    counter-reset: subsection;
+}
+
+.article h2::before {
+    content: counter(section) ". ";
+}
+
+.article h3 {
+    counter-increment: subsection;
+    counter-reset: subsubsection;
+}
+
+.article h3::before {
+    content: counter(section) "." counter(subsection) ". ";
+}
+
+.article h4 {
+    counter-increment: subsubsection;
+    counter-reset: subsubsubsection;
+}
+
+.article h4::before {
+    content: counter(section) "." counter(subsection) "." counter(subsubsection) ". ";
+}
+
+.article h5::before {
+    content: " - ";
+}
+
+.article h6::before {
+    content: " - - ";
+}
+
+.donate {
+
+    font-size: 85%;
+    
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+
+    border-radius: 1em;
+
+    color: black;
+    background-color:gold;
+
+    font-weight: bold;
+
+    display: inline-block;
+}
+
+.donate::before {
+    /*content: "\2713 ";*/ /*https://css-tricks.com/css-content/*/
+    content: "Donate";
+}
+
+@media only screen and (max-width: 50em) {
+    .content > section {
+        flex-direction: column;
+        /*background-color: red;*/
+        align-items: stretch;
+    }
+    .article {
+        order: 0;
+    }
+    .sidebar {
+        border-top: solid 2px var(--navbox_top_color);
+        padding-top: 1em;
+        order: 1;
+    }
+}
