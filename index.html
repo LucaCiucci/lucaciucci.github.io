@@ -45,42 +45,44 @@
             <tr>
               <td><code>N/A</code></td>
               <td>
-                <code><code-function>Gnuplotpp</code-function>(<code-keyword>bool</code-keyword> <code-var>persist</code-var> = <code-keyword>true</code-keyword>, <code-class>size_t</code-class> <code-var>buffSize</code-var> = <code-number>1</code-number> <code-function>&lt;&lt;</code-function> <code-number>10</code-number>)</code>
+                <code><code-function>Gnuplotpp</code-function>(<code-keyword>bool</code-keyword> <code-pvar>persist</code-pvar> = <code-keyword>true</code-keyword>, <code-class>size_t</code-class> <code-pvar>buffSize</code-pvar> = <code-number>1</code-number> <code-function>&lt;&lt;</code-function> <code-number>10</code-number>)</code>
                 <details>
                   <summary>Default constructor</summary>
-                  <h5>Params</h5>
-                  <table class="members-list">
-                    <tr>
-                      <td><code><code-keyword>bool</code-keyword></code></td>
-                      <td>
-                        <code><code-var>persist = <code-keyword>true</code-keyword></code-var></code>
-                        <details>
-                          <summary>Opens the pipe with <code><code-var>--persist</code-var> option</code></summary>
-                          If this value is set to <code><code-keyword>true</code-keyword></code>, the pipe with gnuplot will be open by calling
-                          <pre><code><code-function>gnuplotpp</code-function> <code-var>--persist</code-var></code></pre>
-                          otherwise it will be openen with a simple:
-                          <pre><code><code-function>gnuplotpp</code-function></code></pre>
-                        </details>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><code><code-class>size_t</code-class></code></td>
-                      <td>
-                        <code><code-var>buffSize</code-var> = <code-number>1</code-number> <code-function>&lt;&lt;</code-function> <code-number>10</code-number></code>
-                        <details>
-                          <summary>The internal <code><code-class>streambuf</code-class></code> buffer size</summary>
-                          With this constructor, an internal <code><code-class>GnuplotPipe</code-class></code> will be created: this class is an <code><code-class>ostream</code-class></code> with a default <code><code-class>streambuf</code-class></code> that is a <code><code-class>PipeStreambuf??</code-class></code>, it holds and interal buffer that is written every time it is flushed into the pipe (for example by <code><code-namespace>std</code-namespace>::<code-function>endl</code-function></code> or every time it reaches <code><code-var>buffSize</code-var></code>).
-                        </details>
-                      </td>
-                    </tr>
-                  </table>
-                  <h5>Return value</h5>
-                  <table class="members-list">
-                    <tr>
-                      <td>n/a</td>
-                      <td>n/a</td>
-                    </tr>
-                  </table>
+                  <details><summary>Params</summary>
+                    <table class="members-list">
+                      <tr>
+                        <td><code><code-keyword>bool</code-keyword></code></td>
+                        <td>
+                          <code><code-pvar>persist = <code-keyword>true</code-keyword></code-pvar></code>
+                          <details>
+                            <summary>Opens the pipe with <code><code-pvar>--persist</code-pvar> option</code></summary>
+                            If this value is set to <code><code-keyword>true</code-keyword></code>, the pipe with gnuplot will be open by calling
+                            <pre><code><code-function>gnuplotpp</code-function> <code-pvar>--persist</code-pvar></code></pre>
+                            otherwise it will be openen with a simple:
+                            <pre><code><code-function>gnuplotpp</code-function></code></pre>
+                          </details>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code><code-class>size_t</code-class></code></td>
+                        <td>
+                          <code><code-pvar>buffSize</code-pvar> = <code-number>1</code-number> <code-function>&lt;&lt;</code-function> <code-number>10</code-number></code>
+                          <details>
+                            <summary>The internal <code><code-class>streambuf</code-class></code> buffer size</summary>
+                            With this constructor, an internal <code><code-class>GnuplotPipe</code-class></code> will be created: this class is an <code><code-class>ostream</code-class></code> with a default <code><code-class>streambuf</code-class></code> that is a <code><code-class>PipeStreambuf??</code-class></code>, it holds and interal buffer that is written every time it is flushed into the pipe (for example by <code><code-namespace>std</code-namespace>::<code-function>endl</code-function></code> or every time it reaches <code><code-pvar>buffSize</code-pvar></code>).
+                          </details>
+                        </td>
+                      </tr>
+                    </table>
+                  </details>
+                  <details><summary>Return Value</summary>
+                    <table class="members-list">
+                      <tr>
+                        <td>n/a</td>
+                        <td>n/a</td>
+                      </tr>
+                    </table>
+                  </details>
                   <h4>Detailed Description</h4>
                   This is the default costructor. It is called for example when you build a <code><code-class>Gnuplotpp</code-class></code> instance like this:
                   <pre><code><code-comment>// this will call the default constructor</code-comment>
@@ -99,6 +101,13 @@
                 <code><code-function>Gnuplotpp</code-function>(<code-namespace>std</code-namespace>::<code-class>ofstream</code-class>&& <code-pvar>oFileStream</code-pvar>)</code>
                 <details>
                   <summary>Instance to write on file</summary>
+                  <details><summary>Params</summary>
+                  <table class="members-list">
+                    <tr>
+                      <td><code></code></td>
+                    </tr>
+                  </table>
+                  </details>
                   <p>
                     This constructor builds a <code><code-class>Gnuplotpp</code-class></code> instance that writes all the output in the <code><code-pvar>oFileStream</code-pvar></code> file.<br>
                     The Gnuplot program is not called and no plots will be created.
