@@ -319,3 +319,186 @@ h2, h3, h4, h5, h6 {
         order: 1;
     }
 }
+
+/*
+================================================================================================================================
+================================================================================================================================
+                                                        CODE
+================================================================================================================================
+================================================================================================================================
+*/
+
+:root {
+    --code-color: rgb(200, 200, 200);
+}
+
+body {
+    --code_background_color: rgb(30, 30, 30);
+}
+
+body.light-mode {
+    --code_background_color: hsl(0, 0%, 100%);
+}
+
+/*
+================================================================
+                             ENVIRONMENT
+================================================================
+*/
+
+pre {
+    background-color: var(--code_background_color, green);
+    border-radius: 1em;
+    padding: 1em;
+
+    margin: 0.5em;
+
+    font-size: 75%;
+
+    /* https://www.tutorialspoint.com/How-do-I-wrap-text-in-a-pre-tag-in-HTML
+    overflow-x:hidden;
+    overflow-wrap:break-word;*/
+
+    border: solid 1px gray;
+
+    transition: background-color var(--theme_color_transition, 1s ease-in-out);
+}
+
+code {
+    color: var(--code-color);
+    font-family: Consolas;
+
+    transition: background-color var(--theme_color_transition, 1s ease-in-out);
+}
+
+code {
+    background-color: var(--code_background_color, red);
+    border-radius: 0.25em;
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+
+    transition: background-color var(--theme_color_transition, 1s ease-in-out);
+}
+pre code {
+    background-color: transparent;
+
+    border-radius: 0;
+    padding: 0;
+}
+
+table.members-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.members-list tr {
+    border-radius: 0;
+    padding: 10px;
+    border-bottom: solid 1px var(--text_color);
+    border-top: solid 1px var(--text_color);
+
+    vertical-align: top;
+}
+
+.members-list td {
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+}
+
+.members-list tr > td:first-child {
+    min-width: 5em;
+    width: 0;
+    text-align: right;
+    /*background-color: red;*/
+    border-right: solid 1px var(--code-color);
+}
+
+.members-list details {
+    margin-left: 0.25em;
+    padding-left: 0.5em;
+    border-left: solid 2px var(--navbox_top_color);
+    border-radius: 0.25em;
+}
+
+/*
+================================================================
+                              TAGS
+================================================================
+*/
+
+/*default code element*/
+code span, code-element {
+    text-decoration: line-through;
+    color: red;
+}
+
+code-keyword, code .keyword, code .boolean {
+    text-decoration: none;
+    color: rgb(86, 156, 214);
+}
+
+code-macro, code .macro-name{
+    text-decoration: none;
+    color: rgb(190, 183, 255);
+}
+
+code-concept, code-class, code .class-name {
+    text-decoration: none;
+    color: rgb(78, 201, 186);
+}
+
+code-var {
+    text-decoration: none;
+    color: rgb(156, 220, 254);
+}
+
+code-mvar, code-pvar {
+    text-decoration: none;
+    color: rgb(150, 150, 150);
+}
+
+code-function, code .function, code .operator {
+    text-decoration: none;
+    color: rgb(220, 220, 170);
+}
+
+code-string, code .string {
+    text-decoration: none;
+    color: rgb(214, 157, 122);
+}
+
+code-comment, code .comment {
+    text-decoration: none;
+    color: rgb(87, 166, 74);
+}
+
+code-preprocessor, code .macro, code .directive, code .directive-hash {
+    text-decoration: none;
+    color: rgb(155, 155, 155);
+}
+
+code-flux {
+    text-decoration: none;
+    color: rgb(216, 160, 223);
+}
+
+code-number, code .number {
+    text-decoration: none;
+    color: rgb(181, 206, 168);
+}
+
+code-namespace, code .namespace {
+    color: var(--code-color);
+    text-decoration: underline;/*!!!*/
+}
+
+/* !!! */
+.punctuation, code .generic-function {
+    text-decoration: inherit;
+    color: inherit;
+}
+
+bk {
+    border-left: solid 1px red;
+    background-color: green;
+}
