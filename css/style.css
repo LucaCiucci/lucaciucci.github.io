@@ -304,7 +304,8 @@ h2, h3, h4, h5, h6 {
     content: "Donate";
 }
 
-@media only screen and (max-width: 50em) {
+/*@media only screen and (max-width: 50em) {*/
+@media only screen and (max-width: 60em) {
     .content > section {
         flex-direction: column;
         /*background-color: red;*/
@@ -348,16 +349,19 @@ body.light-mode {
 
 pre {
     background-color: var(--code_background_color, green);
-    border-radius: 1em;
-    padding: 1em;
+    border-radius: 0.5em;
+    padding: 0.5em;
 
     margin: 0.5em;
 
-    font-size: 75%;
+    /*font-size: 75%;*/
 
     /* https://www.tutorialspoint.com/How-do-I-wrap-text-in-a-pre-tag-in-HTML
     overflow-x:hidden;
-    overflow-wrap:break-word;*/
+    overflow-wrap:break-word;
+    white-space: pre-wrap;
+    word-wrap: break-word;*/
+    overflow: auto;
 
     border: solid 1px gray;
 
@@ -369,6 +373,8 @@ code {
     font-family: Consolas;
 
     transition: background-color var(--theme_color_transition, 1s ease-in-out);
+
+    font-size: 90%;
 }
 
 code {
@@ -384,6 +390,13 @@ pre code {
 
     border-radius: 0;
     padding: 0;
+}
+
+code {
+    word-wrap: break-word;
+}
+pre code {
+    word-wrap: unset;
 }
 
 table.members-list {
@@ -501,4 +514,77 @@ code-namespace, code .namespace {
 bk {
     border-left: solid 1px red;
     background-color: green;
+}
+
+/* TMP */
+
+pre.line-count {
+    counter-reset: line;
+}
+
+pre.line-count code-line {
+    counter-increment: line;
+}
+
+pre.line-count code-line::before {
+    content: counter(line);
+    border-right: solid 1px gray;
+    display: inline-block;
+    width: 3em;
+
+    text-align: right;
+    padding-right: 0.5em;
+    margin-right: 1em;
+
+    color: gray;
+}
+
+table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+td {
+    /*border: solid 1px red;*/
+}
+
+div.TODO {
+    background-color: rgba(137, 43, 226, 0.25);
+    border: solid 1px blueviolet;
+    border-left: solid 0.5em red;
+    padding-left: 0.5em;
+}
+
+lc-todo, lc-warning {
+    --rgb_color : 43, 226, 43;
+    display: block;
+
+    border: solid 1px;
+    border-left: solid 0.5em;
+    
+    padding-left: 0.5em;
+    margin: 0.25em;
+
+    background-color: rgba(var(--rgb_color), 0.1);
+    border-color: rgb(var(--rgb_color));
+}
+lc-todo::before, lc-warning::before {
+    /*color: rgb(var(--rgb_color));*/
+    font-weight: bold;
+    content: "<< undef >>";
+    display: inline-block;
+    margin-right: 1em;
+}
+
+lc-warning {
+    --rgb_color : 180, 126, 9;
+}
+lc-warning::before {
+    content: "WARNING:";
+}
+lc-todo {
+    --rgb_color: 137, 43, 226;
+}
+lc-todo::before {
+    content: "TODO:";
 }
