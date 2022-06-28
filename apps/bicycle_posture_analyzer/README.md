@@ -1,0 +1,6 @@
+
+
+per compilare:
+```
+npx tsc
+```
