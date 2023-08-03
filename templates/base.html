@@ -1,0 +1,21 @@
+{% import "macros/urls.html" as macros %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ section.title }}</title>
+
+    <link rel="stylesheet" href='{{ get_url(path="css/style.css") }}'>
+    <!--link rel="stylesheet" href='{{ macros::rel_url(path=get_url(path="css/style.css"), trailing_slash=true) | safe }}'-->
+    <!--
+        {{ get_url(path="css/style.css") | safe }}
+a
+        "{{ macros::rel_url(path="css/style.css") | safe }}"
+    -->
+</head>
+<body>
+    {% block content %} {% endblock %}
+</body>
+</html>
