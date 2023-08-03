@@ -33,6 +33,7 @@ jobs:
         run: |
           mkdir tmp
           cd tmp
+          git clone https://github.com/getzola/zola
           cargo install --path zola
       
       - name: build site
