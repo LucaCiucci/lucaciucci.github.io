@@ -35,7 +35,7 @@ checksum = "301abaae475aa91687eb82514b328ab47a211a533026cb25fc3e519b86adfc3c"
 [[package]]
 name = "vswg"
 version = "0.1.0"
-source = "git+https://github.com/OpenPhysicsNotes/vswg#8bf55509291bb3395e6a5489578afd21a97e0d52"
+source = "git+https://github.com/OpenPhysicsNotes/vswg#c5d6f89996492ec41c683b73f24e45fd340e3024"
 
 [[package]]
 name = "website"

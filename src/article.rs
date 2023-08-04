@@ -1,6 +1,6 @@
 use std::{path::PathBuf, fs::File, io::Write};
 
-use vswg::{generator::Rule, path::PathVec};
+use vswg::{Rule, PathVec};
 use write_html::{Html, HtmlEnv, AsHtml, html};
 use yaml_rust::Yaml;
 
