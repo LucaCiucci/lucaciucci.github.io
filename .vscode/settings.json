@@ -3,7 +3,14 @@
         "beamline",
         "INFN",
         "IPPOG",
+        "Microcontrollers",
         "regui",
-        "Scanny"
+        "rgba",
+        "Scanny",
+        "toolset",
+        "Typst"
+    ],
+    "cSpell.ignoreWords": [
+        "lucaciucci"
     ]
 }

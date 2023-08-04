@@ -66,7 +66,7 @@ template = "article.html"
 <tr><td>residence   </td><td><a href="https://goo.gl/maps/vY7bhqgj2J5jvc128">via Cesare Studiati, 11</a>, <br> Pisa, PI, Italy</td></tr>
 <tr><td>phone number</td><td><a href="tel:+393245509174">+39 324 550 9174</a></td></tr>
 <tr><td>E-Mail      </td><td><a href="mailto:luca.ciucci99@gmail.com">luca.ciucci99@gmail.com</a>, <br> <a href="luca@scanny3d.com">luca@scanny3d.com</a>, <br> <a href="luca@lucaciucci99.com">luca@lucaciucci99.com</a></td></tr>
-<tr><td>Website     </td><td><a href="https://lucaciucci99.com">lucaciucci99.com</a> <!--TODO redirect to gith--></td></tr>
+<tr><td>Website     </td><td><a href="https://lucaciucci99.com">lucaciucci99.com</a> <!--TODO redirect to github--></td></tr>
 <tr><td>GitHub      </td><td><a href="https://github.com/LucaCiucci">LucaCiucci</a></td></tr>
 <tr><td>LinkedIn    </td><td><a href="https://www.linkedin.com/in/luca-ciucci-3b22991a0/">Luca Ciucci</a></td></tr>
 <tr><td>Twitter     </td><td><a href="https://twitter.com/LucaCiucci99">LucaCiucci99</a></td></tr>
@@ -82,15 +82,16 @@ Bullet list of my main interests:
   - languages:
     - `C++` (& `C`): advanced practical experience, I use `CMake` as `Visual Studio` as build systems
     - `Rust`: a very welcome recent adoption in my toolset, still learning but already developing real-life algorithms and a new GUI library
-    - `Matlab`: used matlab since prior to my university studies, especially for data analysus and visualization
+    - `Matlab`: used matlab since prior to my university studies, especially for data analysis and visualization
     - `TypeScript` & `JavaScript`: for both frond-end and back-end
     - `HTML`& `CSS`
     - `Python`: data analysis
     - `Typst`
     - `LaTex`
+    - `Java`
     - `Pascal`
     - `PIC Basic`
-  - systems: **Desktop**, **Embedded**, **Microcontrollers**
+  - systems: **Desktop**, **Microcontrollers**, **Embedded**
   - technologies: **3D reconstruction**, **Quaternions**, **Differentials**, **Numerical Optimization**, **image processing**, **camera calibration**, **Neural Networks**, **GUI**, **Async** programming, **camera interface**
 - Electronics: some very basic knowledge, worked mainly with prebuilt boards
   - focus points:
@@ -212,9 +213,9 @@ Bullet list of my main interests:
             <b>2017</b>
         </td>
         <td>
-            <strong>Olimpiadi della robotica</strong><br>
+            <strong>"Olimpiadi della robotica"</strong><br>
             <img src="pack-man.png" alt="pack-man" class="event-image">
-            Menzione d'onore alle Olimpiadi della Robotica di Milano, progetto "<em>pac-man</em>".
+            Participated with the "<em>pac-man</em>" project for which I built the robot and the software.
         </td>
     </tr>
     <tr>
