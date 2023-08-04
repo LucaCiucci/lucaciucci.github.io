@@ -56,7 +56,7 @@ impl Rule for HtmlArticle {
                         b { "🚧 Under construction 🚧" }
                     }
                     lc-content {
-                        lc-sidebar;
+                        lc-sidebar { lc-nav-index class="in-nav-index" { "pippo" } }
                         article {
                             (html)
                         }
