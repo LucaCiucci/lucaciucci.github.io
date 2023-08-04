@@ -36,8 +36,6 @@ impl Rule for HtmlArticle {
 
         use write_html::*;
 
-        let s = "ciao";
-
         let base = rel.parent().unwrap().inverse();
 
         let page = html!(
@@ -73,16 +71,10 @@ impl Rule for HtmlArticle {
                         }
                     }
                     (TopNav(&rel))
-                    (r###"
-<!--lc-topnav>
-    <div class="top-nav-links">
-        <a>ciao</a>
-        <a>ciao</a>
-        {{ get_url(path=section.permalink) }}
-    </div>
-</lc-topnav-->
-<div class="top-notice orange"><b>🚧 Under construction 🚧</b></div>
-
+                    div class="top-notice orange" {
+                        b { "🚧 Under construction 🚧" }
+                    }
+(r###"
 <lc-content>
 <lc-sidebar>
     <!-- TODO ${this._related_articles_box} -->
@@ -91,21 +83,7 @@ impl Rule for HtmlArticle {
                     article {
                         (html.as_html())
                     }
-(r###"<script>
-// take all h2..h6 with id and make them a link to themselves
-//let article = document.querySelector("article");
-//let headers = article.querySelectorAll("h2[id], h3[id], h4[id], h5[id], h6[id]");
-//for (let header of headers) {
-//    let a = document.createElement("a");
-//    a.href = "#" + header.id;
-//    a.textContent = header.textContent;
-//    header.textContent = "";
-//    header.appendChild(a);
-//}
-</script>"###.as_html())
-                    script src=((&base / "js/index.js").uri_dir().as_str()) {
-
-                    }
+                    script src=((&base / "js/index.js").uri_dir().as_str());
                 }
             }
         ).to_html_string().unwrap();
