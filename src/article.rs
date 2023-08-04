@@ -1,8 +1,12 @@
 use std::{path::PathBuf, fs::File, io::Write};
 
 use vswg::{generator::Rule, path::PathVec};
-use write_html::{Html, HtmlEnv, AsHtml, Compactability, tags, Empty, html};
+use write_html::{Html, HtmlEnv, AsHtml, html};
 use yaml_rust::Yaml;
+
+mod header; use header::*;
+mod head_content; use head_content::*;
+mod top_nav; use top_nav::*;
 
 pub struct HtmlArticle;
 impl Rule for HtmlArticle {
@@ -32,7 +36,7 @@ impl Rule for HtmlArticle {
         assert_eq!(yaml.len(), 1);
         let yaml = &yaml[0];
 
-        let html = split[2];
+        let html = split[2].as_html();
 
         use write_html::*;
 
@@ -46,44 +50,18 @@ impl Rule for HtmlArticle {
                     (HeadContent(yaml, &base))
                 }
                 body {
-                    header {
-                        div {
-                            div class="links" {
-                                div class="button" {
-                                    a href=(base.uri_dir().as_str()) { "Luca Ciucci" }
-                                }
-                                div class="button" {
-                                    a href=((&base / "about-me").uri_dir().as_str()) { "About Me" }
-                                }
-                                div class="button" {
-                                    a href=((&base / "cv").uri_dir().as_str()) { "CV" }
-                                }
-                                div class="button" {
-                                    a href=((&base / "topics").uri_dir().as_str()) { "Topics" }
-                                }
-                                div class="button" {
-                                    a href=((&base / "research").uri_dir().as_str()) { "Research" }
-                                }
-                                div class="button" {
-                                    a href=((&base / "projects").uri_dir().as_str()) { "Projects" }
-                                }
-                            }
-                        }
-                    }
+                    (BodyHeader(base.clone()))
                     (TopNav(&rel))
                     div class="top-notice orange" {
                         b { "🚧 Under construction 🚧" }
                     }
-(r###"
-<lc-content>
-<lc-sidebar>
-    <!-- TODO ${this._related_articles_box} -->
-    <lc-nav-index class="in-nav-index">pippo pluto</lc-nav-index>
-</lc-sidebar>"###.as_html())
-                    article {
-                        (html.as_html())
+                    lc-content {
+                        lc-sidebar;
+                        article {
+                            (html)
+                        }
                     }
-                    script src=((&base / "js/index.js").uri_dir().as_str());
+                    script src=((&base / "js/index.js").uri().as_str());
                 }
             }
         ).to_html_string().unwrap();
@@ -93,58 +71,5 @@ impl Rule for HtmlArticle {
         out_file.write_all(page.as_bytes()).expect("Error writing file");
 
         true
-    }
-}
-
-struct HeadContent<'a>(&'a Yaml, &'a PathVec);
-
-impl<'a> Html for HeadContent<'a> {
-    fn write_html(self, env: &mut impl write_html::HtmlEnv) -> std::fmt::Result {
-        if let Some(title) = self.0["title"].as_str() {
-            env.open_tag("title", Compactability::No)?
-                .inner_html()?
-                .write_html(title.as_html_text())?;
-        }
-
-        env.write_html(tags::link([
-            ("rel", "stylesheet"),
-            ("href", (self.1 / "css/style.css").uri().as_str())
-        ], Empty))?;
-
-        Ok(())
-    }
-}
-
-struct TopNav<'a>(&'a PathVec);
-
-impl<'a> Html for TopNav<'a> {
-    fn write_html(self, env: &mut impl HtmlEnv) -> std::fmt::Result {
-        let pieces = self.0.pieces();
-
-        if pieces.is_empty() {
-            return Ok(());
-        }
-
-        let mut topnav = env.open_tag("lc-topnav", Compactability::No)?
-            .inner_html()?;
-        
-        let mut div = topnav.open_tag("div", Compactability::No)?
-            .with_attr("class", "top-nav-links")?
-            .inner_html()?;
-
-        let pieces = self.0.pieces();
-        let mut path = self.0.parent().unwrap().inverse();
-        div.write_html(html!(
-            a href=(path.uri().as_str()) { "Luca Ciucci" }
-        ))?;
-        for i in 0..pieces.len() {
-            let name = &pieces[i];
-            path = &path / name.as_str();
-            div.write_html(html!(
-                a href=(path.uri().as_str()) { (name.as_str().as_html_text()) }
-            ))?;
-        }
-
-        Ok(())
     }
 }
