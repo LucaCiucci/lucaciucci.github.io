@@ -7,6 +7,7 @@ use yaml_rust::Yaml;
 mod header; use header::*;
 mod head_content; use head_content::*;
 mod top_nav; use top_nav::*;
+mod related; use related::*;
 
 pub struct HtmlArticle;
 impl Rule for HtmlArticle {
@@ -15,10 +16,19 @@ impl Rule for HtmlArticle {
             return false;
         }
 
+        // relative base path
+        let base = rel.parent().unwrap().inverse();
+
+        // load the file, remove "\r"
         let src = std::fs::read_to_string(path)
             .expect("Error reading file")
             .replace("\r", "");
 
+        // split the file in 2 parts: yaml and html. Example:
+        // ---
+        // title: "My title"   <- yaml
+        // ---
+        // <h1>My title</h1>   <- html
         let split = src
             .split("---\n")
             .map(|s| s.trim())
@@ -31,17 +41,22 @@ impl Rule for HtmlArticle {
             return false;
         }
 
-        let yaml = yaml_rust::YamlLoader::load_from_str(split[1]).expect("Error parsing YAML");
+        let split = &split[1..];
 
+        // parse the yaml
+        let yaml = yaml_rust::YamlLoader::load_from_str(split[0])
+            .expect(format!("Error parsing yaml in file {:?}", path).as_str());
+
+        // we should have only one yaml
         assert_eq!(yaml.len(), 1);
         let yaml = &yaml[0];
 
-        let html = split[2].as_html();
+        // this is the html article
+        let html = split[1].as_html();
 
         use write_html::*;
 
-        let base = rel.parent().unwrap().inverse();
-
+        // create the page
         let page = html!(
             (Doctype)
             html lang="en" {
@@ -56,7 +71,10 @@ impl Rule for HtmlArticle {
                         b { "🚧 Under construction 🚧" }
                     }
                     lc-content {
-                        lc-sidebar { lc-nav-index class="in-nav-index" { "pippo" } }
+                        lc-sidebar {
+                            lc-nav-index class="in-nav-index" { "pippo" }
+                            (RelatedArticles(yaml))
+                        }
                         article {
                             (html)
                         }
