@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "beamline",
+        "Compactability",
         "INFN",
         "IPPOG",
         "Microcontrollers",
@@ -8,7 +9,9 @@
         "rgba",
         "Scanny",
         "toolset",
-        "Typst"
+        "topnav",
+        "Typst",
+        "vswg"
     ],
     "cSpell.ignoreWords": [
         "lucaciucci"

@@ -29,15 +29,8 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, world!
       
-      - name: download zola
-        run: |
-          mkdir tmp
-          cd tmp
-          git clone https://github.com/getzola/zola
-          cargo install --path zola
-      
       - name: build site
-        run: zola build
+        run: cargo run
         
       - uses: actions/upload-pages-artifact@v2
         with:

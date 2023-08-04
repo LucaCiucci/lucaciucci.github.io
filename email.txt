@@ -1,9 +1,0 @@
-A chi di dovere,
-vorrei fare domanda per una posizione come programmatore junior nel reparto Ricerca e Sviluppo, che ho trovato al seguente link https://isacsrl.eu/lavora-con-noi/ .
-
-Sono uno studente iscritto a Fisica a Pisa, ma i miei interessi sono molto ampi e la programmazione è uno dei principali. Ho già avuto esperienze lavorative in questo campo (soprattutto C++) in quanto ho lavorato in diversi progetti per l'azienda di famiglia Scanny3D che si occupa di scanner 3-dimensionali. Sono particolarmente interessato all'applicazione delle mie conoscenze fisiche e matematiche in ambito informatico, e la richiesta "Interesse a sviluppi in matematica applicata e/o algoritmi di ricerca operativa" mi ha molto incuriosito. Sarei quindi particolarmente interessato alla posizione di "programmatore real-time" e sarei ben disposto a imparare nuove nozioni e a mettermi in gioco il più possibile. Non escludo le altre posizioni ma non ho esperienza del framework .NET e C#, sarei comunque disposto ad impararle autonomamente se richiesto.
-
-Se siete interessati, sono disponibile per un colloquio conoscitivo. Il mio CV è disponibile al link https://www.lucaciucci99.com/cv/ oppure in formato PDF allegato a questa mail.
-
-Cordiali saluti,
-Luca Ciucci
