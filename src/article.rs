@@ -78,6 +78,9 @@ impl Rule for HtmlArticle {
                         article {
                             (html)
                         }
+                        div class="out-nav-index-container" {
+                            lc-nav-index class="out-nav-index" { "pippo" }
+                        }
                     }
                     script src=((&base / "js/index.js").uri().as_str());
                 }
