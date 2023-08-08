@@ -18,6 +18,9 @@ impl Html for BodyHeader {
                             a href=((&base / "about-me").uri_dir().as_str()) { "About Me" }
                         }
                         div class="button" {
+                            a href=((&base / "projects").uri_dir().as_str()) { "Projects" }
+                        }
+                        div class="button" {
                             a href=((&base / "cv").uri_dir().as_str()) { "CV" }
                         }
                         div class="button" {
@@ -27,7 +30,7 @@ impl Html for BodyHeader {
                             a href=((&base / "research").uri_dir().as_str()) { "Research" }
                         }
                         div class="button" {
-                            a href=((&base / "projects").uri_dir().as_str()) { "Projects" }
+                            a href=("https://github.com/LucaCiucci") { "GitHub" }
                         }
                     }
                 }
