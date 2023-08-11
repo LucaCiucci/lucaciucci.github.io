@@ -51,8 +51,32 @@ impl Rule for HtmlArticle {
         assert_eq!(yaml.len(), 1);
         let yaml = &yaml[0];
 
-        // this is the html article
-        let html = split[1].as_html();
+        let mut html = String::new();
+
+        // title
+        if let Some(title) = yaml["title"].as_str() {
+            html.write_html(html! {
+                h1 { (title.as_html_text()) }
+            }).unwrap();
+        }
+
+        // description
+        if let Some(description) = yaml["description"].as_str() {
+            html.write_html(html! {
+                article-description { (description.as_html_text()) }
+            }).unwrap();
+        }
+
+        // date
+        if let Some(date) = yaml["date"].as_str() {
+            html.write_html(html! {
+                article-date { (date.as_html_text()) }
+            }).unwrap();
+        }
+
+        html += split[1];
+
+        let html = html.as_html();
 
         use write_html::*;
 

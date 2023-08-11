@@ -1,0 +1,14 @@
+
+
+article-date {
+    color: gray;
+    margin-bottom: 0.25em;
+    display: block;
+    text-align: right;
+}
+
+article-description {
+    color: gray;
+    display: block;
+    text-align: center;
+}
