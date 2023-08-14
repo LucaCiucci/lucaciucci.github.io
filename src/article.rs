@@ -87,6 +87,17 @@ impl Rule for HtmlArticle {
                 head {
                     (DefaultMeta)
                     (HeadContent(yaml, &base))
+                    (r##"
+                     <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VJDBPCCRK7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VJDBPCCRK7');
+</script>
+                     "##.as_html())
                 }
                 body {
                     (BodyHeader(base.clone()))
