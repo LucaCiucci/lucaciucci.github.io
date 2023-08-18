@@ -8,7 +8,14 @@ impl<'a> Html for HeadContent<'a> {
         let base = self.1;
 
         // title
-        if let Some(title) = yaml["title"].as_str() {
+        let title = if let Some(title) = yaml["page-title"].as_str() {
+            Some(title)
+        } else if let Some(title) = yaml["title"].as_str() {
+            Some(title)
+        } else {
+            None
+        };
+        if let Some(title) = title {
             env.write_html(html! {
                 title { (title.as_html_text()) }
                 meta name="og:title" content=(title);
