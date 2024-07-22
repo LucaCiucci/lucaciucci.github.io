@@ -1,0 +1,195 @@
+---
+title: Tesi triennale
+date: 2024/07/17
+---
+<head template="article">
+    <title>Tesi triennale</title>
+</head>
+
+<p>
+    This is the presentation for my bachelor's thesis.<br>
+    PDF and sources are available <a href="https://github.com/LucaCiucci/tesi-triennale/releases">here</a>.
+</p>
+<hr>
+<div>
+    <img id="slide-svg" alt="Tesi triennale"/>
+</div>
+
+<!-- buttons -->
+<div style="width: 100%; display: flex; gap: 1em;" >
+    <button id="prev" style="flex-grow: 1;">prev</button>
+    <button id="next" style="flex-grow: 1;">next</button>
+</div>
+<hr>
+<div id="script"></div>
+
+<style>
+    #slide-svg {
+        width: 100%;
+        aspect-ratio: 16/9;
+    }
+</style>
+
+<script>
+    let img = document.getElementById('slide-svg');
+    let prev = document.getElementById('prev');
+    let next = document.getElementById('next');
+    let script = document.getElementById('script');
+
+    let current_slide = 1;
+    const COUNT = 7;
+
+    const SCRIPT = [
+        // I
+        "Buongiorno, oggi vi parlerò del tema dei monopoli magnetici e di alcune delle loro proprietà teoriche deducibili dalle equazioni di Maxwell e dalla Meccanica Qauntisitica.",
+
+        // 1/5
+        `<p>
+            Le equazioni di Maxwell presentano una dualità intrinseca che suggerisce una possibile simmetria tra carica elettrica e magnetica. In particolare è naturale chiedersi se è possibile scrivere e risolvere l'equazione di Poisson per la carica magnetica e questo non pone particolare problemi.
+        </p>
+        <p>
+            In ambito classico la prima peculiarità che può venire in mente è la conservazione del momento angolare, che di fatti non si conserva come possiamo vedere analizzando un problema di scattering $e-g$ dove la posizione relativa di muove su di un cono.
+        </p>
+
+        <p>
+            In realtà in meccanica classica si può trovare una diversa definizione del momento angolare conservato, comprendente un termine aggiuntivo.<br>
+            Comunque notiamo che l'usuale momento angolare è conservato se si considera anche il contributo del campo elettromagnetico, e questo è un aspetto desiderabile poiché il sistema è invariante per rotazioni.
+        </p>
+
+        <p>
+            E' poi naturale chiedersi come sarebbe fatto il potenziale ti tale oggetto, ed una soluzione particolarmente semplice è il potenziale di Dirac, che però risulta singolare su di una stringa.<br>
+            Altri potenziali uni-valori hanno tutti una singolarita su almeno una stringa e questo deriva dal fatto che la divergenza del rotore è nulla.<br>
+            Comunque il fatto che la stringa dipenda dalla gauge ci dice che non è fisica ma un artefatto della soluzione.
+        </p>
+
+        <p>
+            Un'altra osservazione interessante che ci spinge ad esplorare questo tema è il fatto che le equazioni di Maxwell presentano una simmetria $U(1)$ e si può comunque mostrare esplicitamente che le equazioni di Eulero Lagrange per il campo sono invarianti sotto tale simmetria.
+        </p>`,
+
+        // 2/5
+        `<p>
+            Se guardiamo il problema dell'interazione tra una carica elettrica e magnetica da un punto di vista quantistico, troviamo dei vincoli aggiuntivi.<br>
+            Infatti calcolando la variazione dell'azione, e imponendo che l'ampiezza $e^(i S)$ sia invariante di gauge, troviamo la seguente regola di quantizzazione.
+        </p>
+
+        <p>
+            <strong>Questa è particolarmente interessante perché l'esistenza di anche solo un monopolo nell'universo spiegherebbe la quantizzazione della carica elettrica.</strong>
+        </p>
+
+        <p>
+            Ci sono altri modi per giungere alla stessa conclusione, uno notevole è quello di calcolare il Path Integral intorno alla stringa, che abbiamo richiesto non essere osservabile, dunque la fase accumulata deve essere multipla di $2 pi$.<br>
+            Un'altro approccio semplice è quello di richiede che il momento angolare sia intero o semi-intero, e questo ci porta direttamente alla stesso risultato.
+        </p>
+
+        <p>
+            Ripetendo il ragionamento e considerando il problema dinamico tra due dyoni (ossia particelle con carica elettrica e magnetica), troviamo una più generale condizione, che impone contemporaneamente la quantizzazione della carica sia elettrica che magnetica.<br>
+            Scopriamo che stavolta la presenza di un dyone nell'universo impone la quantizzazione di entrambe le cariche: $e$ e $g$ sono collegate e giacciono su un reticolo come quello mostrato in figura.<br>
+            Può sorgere la domanda del perché uno dei due assi è proprio lungo la carica elettrica, ma come vedremo più avanti si può sempre rientrare in questo caso con una rotazione.
+        </p>`,
+
+        // 3/5
+        `<p>
+            Un'altro approccio molto interessante è quello proposto da Wu e Yang che consiste nel rappresentare la soluzione tramite un ricoprimento dello spazio con due potenziali di Dirac al fine di eliminare la singolarità ma ciò è possibile solo rinunciando alla richiesta di avere un solo set di coordinate.
+        </p>
+
+        <p>
+            Se ci chiediamo cosa ne è della regola di quantizzazione, scopriamo che rimane comunque, e si può ritrovare calcolando la fase guadagnata da una funzione d'onda nella regione di sovrapposizione.
+        </p>
+
+        <p>
+            Questo approccio è particolarmente interessante perché si formalizza in modo naturale tramite nozioni di topologia e geometria differenziale:<br>
+            In generale possiamo descrivere il "bundle" di spazio e campo come un FIBRATO. Qui ad esempio $X$ è lo spazio ed $F$ il campo.<br>
+            La topologia non è definita solo da questo prodotto, ma anche dalle funzioni di transizione dei ricoprimenti.<br>
+            In particolare se possiamo scrivere il fibrato come prodotto cartesiano, allora il fibrato è triviale e possiamo usare un solo set di coordinate.
+        <p>
+
+        <p>
+            Una cosa particolare succede se togliamo un punto dello spazio (la sorgente), in tal caso la topologia è definita da $c_1$ che corrisponde alla carica topologica, ossia $e$ per $g$.
+        </p>
+
+        <p>
+            La conclusione notevole è che la presenza di un monopolo rende la topologia dell'universo non triviale!
+        </p>`,
+
+        // 4/5
+        `<p>
+            Infine vorrei presentare un approccio differente che consiste nell'utilizzare due potenziali per eliminare il problema delle singolarità: si cerca prima di riscrivere le equazioni di Maxwell e la dinamica in modo simmetrico.<br>
+            Qui le prime due relazioni sono le equazioni di Maxwell con sorgente e quelle sotto rappresentano la dinamica.<br>
+        </p>
+
+        <p>
+            La costruzione dei potenziali non è banale, un approccio proposto da Dirac è quello di scrivere il tensore di campo come derivata dell'usuale quadri-potenziale e di un tensore aggiuntivo.<br>
+            Comunque si può dimostrare che in questo ambito altri approcci sono equivalenti.
+        </p>
+
+        <p>
+            Abbiamo così introdotto due potenziali che ci permettono di descrivere il campo senza singolarità; tuttavia, avendo ora delle variabili aggiuntive ($G_(mu nu)$), dobbiamo imporre un'equazione di consistenza per mantenere il numero di gradi di libertà. #footnote[Questo ricorda vagamente il caso della parametrizzazione del gruppo $S O(3)$ come accennato prima, infatti tutte le mappe con 3 parametri hanno qualche singolarità ed in molti casi per comodità si preferisce eliminarla al costo di introdurre un'altra variabile ed una condizione di "normalizzazione", è questo un caso d'uso dei quaternioni.<br>
+            Analogamente tale trattazione che fa leva su due potenziali risulta particolarmente utile nelle trattazioni relativistiche.
+        </p>
+
+        <p>
+            Questa trattazione con due potenziali potrebbe sembrare artificiosa, ma risulta essere particolarmente adatta ad essere applicata in ambito relativistico.
+        </p>
+
+        <p>
+            Notiamo infine che in presenza di dyoni è possibile ritrovare il caso usuale con una rotazione, come accennato nella seconda slide.
+        </p>`,
+
+        // 5/5
+        `<p>
+            Per quanto riguarda la ricerca di evidenze sperimentali, questo campo è stato attivo sin dalla prima proposta teorica di Dirac.<br>
+            Al giorno d'oggi alcune teorie oltre il modello standard ne prevedono l'esistenza e in particolare alcune "Grand Unified Theories" (GUTs) li contemplano in un range di energia tra la scala elettrodebole e la scala di Planck, quindi particelle pesanti.<br>
+        </p>
+
+        <p>
+            Da calcoli di elettrodinamica e considerando la regola di quantizzazione prima citata, si trova che questi avrebbero un *forte coupling elettromagnetico* e sarebbero particelle altamente ionizzanti.
+        </p>
+
+        <p>
+            Per ricercarli, una possibilità è quella di misurare direttamente i campi magnetici, e questo è possibile con apparati particolarmente sensibili costituiti da spire di materiale superconduttore
+        </p>
+
+        <p>
+            Altri esperimenti invece sfruttano la grande massa prevista e la loro alta energia persa per ionizzazione. Si può ad esempio ricercare segnali Cherenkov o segnali radio dovuti all'interazione con la materia.
+        </p>
+
+        <p>
+            Per quanto riguarda la ricerca nei collisori, l'LHC è un buon candidato perché la scala di energia potrebbe essere elevata.<br>
+            In particolare nei collisori di LHC sarebbe possibile osservarli direttamente guardando le traiettorie nel campo magnetico, oppure guardando le tracce sui calorimetri elettromagnetici.
+        </p>
+
+        <p>
+            Ad oggi comunque non sono state osservate evidenze dirette.
+        </p>`,
+
+        // II
+        `<p>Vi ringrazio per l'attenzione</p>`,
+    ];
+
+    const show = (slide) => {
+        console.log(current_slide);
+        current_slide = Math.min(Math.max(slide, 1), COUNT);
+        img.src = ``;
+        img.src = `slides/${current_slide.toString().padStart(0, '0')}.svg`;
+        script.innerHTML = SCRIPT[current_slide - 1];
+    }
+
+    show(current_slide);
+
+    prev.addEventListener('click', () => {
+        show(current_slide - 1);
+    });
+
+    next.addEventListener('click', () => {
+        show(current_slide + 1);
+    });
+
+    // listen for arrow keys
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') {
+            show(current_slide - 1);
+        } else if (event.key === 'ArrowRight') {
+            show(current_slide + 1);
+        }
+    });
+</script>
