@@ -33,6 +33,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
+      - name: install typst
+        run: cargo install typst-cli --git https://github.com/typst/typst --tag v0.13.1 
+
       - name: build site
         run: cargo run
         
