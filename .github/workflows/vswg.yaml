@@ -42,6 +42,7 @@ jobs:
           tar -xvf typst-x86_64-unknown-linux-musl.tar.xz
           chmod +x typst
           sudo mv typst /usr/local/bin
+          ls /usr/local/bin/typst
           typst --version
 
       - name: build site
