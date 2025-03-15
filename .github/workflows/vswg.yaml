@@ -39,9 +39,8 @@ jobs:
       - name: install typst
         run: |
           wget https://github.com/typst/typst/releases/download/v0.13.1/typst-x86_64-unknown-linux-musl.tar.xz
-          tar -xvf typst-x86_64-unknown-linux-musl.tar.xz
-          chmod +x typst
-          sudo mv typst /usr/local/bin
+          tar -xf typst-x86_64-unknown-linux-musl.tar.xz
+          sudo mv typst-x86_64-unknown-linux-musl/typst /usr/local/bin
           ls /usr/local/bin/typst
           typst --version
 
