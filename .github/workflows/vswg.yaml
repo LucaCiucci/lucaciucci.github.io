@@ -33,8 +33,14 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
+      #- name: install typst
+      #  run: cargo install typst-cli --git https://github.com/typst/typst --tag v0.13.1 
+
       - name: install typst
-        run: cargo install typst-cli --git https://github.com/typst/typst --tag v0.13.1 
+        run: |
+          wget https://github.com/typst/typst/releases/download/v0.13.1/typst-x86_64-unknown-linux-musl.tar.xz
+          tar -xvf typst-x86_64-unknown-linux-musl.tar.xz
+          sudo mv typst /usr/local/bin
 
       - name: build site
         run: cargo run
@@ -45,4 +51,4 @@ jobs:
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
