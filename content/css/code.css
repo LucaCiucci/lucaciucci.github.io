@@ -40,7 +40,8 @@ pre.inline-height {
 code,
 var, kbd {
     color: var(--code-color);
-    font-family: Consolas;
+    /*font-family: Consolas;*/
+    font-family: monospace;
 
     transition: background-color var(--theme_color_transition, 1s ease-in-out);
 

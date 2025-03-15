@@ -71,8 +71,8 @@ body[bg-image] fixed-bg-image {
 }
 
 body[bg-image] article,
-body[bg-image] lc-nav-index,
-body[bg-image] lc-sidebar > div {
+body[bg-image] lc-nav-index, body[bg-image] .lc-nav-index,
+body[bg-image] lc-sidebar > div, body[bg-image] .lc-sidebar > div {
     background: var(--paper_color);
     border-radius: 1em;
 }
@@ -81,11 +81,11 @@ body[bg-image] article {
     padding: 1em;
 }
 body[bg-image] header,
-body[bg-image] lc-topnav {
+body[bg-image] lc-topnav, body[bg-image] .lc-topnav {
     background: var(--paper_color);
 }
 
-body[bg-image] lc-sidebar > div {
+body[bg-image] lc-sidebar > div, body[bg-image] .lc-sidebar > div {
     border-top: 4px solid rgb(0, 128, 128);
     padding: 0.5em;
 }
@@ -108,7 +108,7 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
-lc-content, lc-content *, header, header * {
+lc-content, .lc-content, lc-content *, .lc-content *, header, header * {
     /*border: 2px solid gray;
     margin: 2px;*/
 }
@@ -177,7 +177,7 @@ header .search-form {
     flex-shrink: 1;
 }
 
-lc-topnav {
+lc-topnav, .lc-topnav {
     display: block;
 
     background-color: var(--topnav-color);
@@ -186,33 +186,34 @@ lc-topnav {
     padding: 0.5em;
 }
 
-lc-topnav > * {
+lc-topnav > *, .lc-topnav > * {
     display: flex;
     flex-wrap: wrap;
     margin: auto;
     max-width: var(--content-max-width);
 }
 
-lc-topnav a, lc-topnav a:visited {
+lc-topnav a, lc-topnav a:visited, .lc-topnav a, .lc-topnav a:visited {
     color: inherit;
     text-decoration: none;
     /*border-left: 1px solid gray;*/
     padding-left: 0.25em;
     padding-right: 0.25em;
 }
-lc-topnav a:not(:last-of-type):after, lc-topnav a:not(:last-of-type):hover:after {
+lc-topnav a:not(:last-of-type):after, lc-topnav a:not(:last-of-type):hover:after, lc-topnav a:not(:last-of-type):visited:after, lc-topnav a:not(:last-of-type):visited:hover:after,
+.lc-topnav a:not(:last-of-type):after, .lc-topnav a:not(:last-of-type):hover:after, .lc-topnav a:not(:last-of-type):visited:after, .lc-topnav a:not(:last-of-type):visited:hover:after {
     content: " >";
     margin-left: 0.5em;
     text-decoration: none;
     color: gray;
 }
 header a:hover, header a:visited:hover,
-lc-topnav a:hover, lc-topnav a:visited:hover
-{
+lc-topnav a:hover, lc-topnav a:visited:hover,
+.lc-topnav a:hover, .lc-topnav a:visited:hover {
     color: var(--link-color);
 }
 
-lc-content {
+lc-content, .lc-content {
     display: grid;
     grid-template-columns: [first-start] var(--left-sidebar-width) [first-end content-start] auto [content-end last-start] var(--right-sidebar-width) [last-end];
     column-gap: 0.5em;
@@ -224,7 +225,7 @@ lc-content {
     padding: 1em;
 }
 
-lc-nav-index {
+lc-nav-index, .lc-nav-index {
     list-style-type: none;
     display: block;
     
@@ -237,15 +238,15 @@ lc-nav-index {
     grid-column: last-start / last-end;
     grid-row: 1/2;
 }
-.out-nav-index-container > lc-nav-index.out-nav-index {
+.out-nav-index-container > lc-nav-index.out-nav-index, .out-nav-index-container > .lc-nav-index.out-nav-index {
     top: 0;
     position: sticky;
 }
-lc-nav-index > aside {
+lc-nav-index > aside, .lc-nav-index > aside {
     /*top: 0;
     position: sticky;*/
 }
-lc-nav-index > aside > li {
+lc-nav-index > aside > li, .lc-nav-index > aside > li {
     border: none;
     border-left: 2px solid gray;
     margin: 0;
@@ -255,40 +256,42 @@ lc-nav-index > aside > li {
 
     transition: all 0.25s;
 }
-lc-nav-index > aside > li[active], lc-nav-index > aside > li[slightly-active] {
+lc-nav-index > aside > li[active], lc-nav-index > aside > li[slightly-active], .lc-nav-index > aside > li[active], .lc-nav-index > aside > li[slightly-active] {
     border-left-color: hsl(var(--theme_HSL));
     background-color: hsl(var(--theme_HSL), 0.125);
 }
-lc-nav-index > aside > li[active] {
+lc-nav-index > aside > li[active], .lc-nav-index > aside > li[active] {
     color: hsl(var(--theme_HSL));
 }
 
-lc-nav-index > aside > li.sub {
+lc-nav-index > aside > li.sub, .lc-nav-index > aside > li.sub {
     padding-left: 1rem;
     font-size: 75%;
 }
 
-lc-nav-index > aside {
+lc-nav-index > aside, .lc-nav-index > aside {
     /*max-height: 80vh;*/
     max-height: 30em;
 }
 
 lc-nav-index > aside a, lc-nav-index > aside a:visited,
-lc-nav-index > aside a:hover, lc-nav-index > aside a:visited:hover {
+lc-nav-index > aside a:hover, lc-nav-index > aside a:visited:hover,
+.lc-nav-index > aside a, .lc-nav-index > aside a:visited,
+.lc-nav-index > aside a:hover, .lc-nav-index > aside a:visited:hover {
     color: inherit;
     text-decoration: inherit;
 }
 
-lc-nav-index > aside a:hover, lc-nav-index > aside a:visited:hover {
+lc-nav-index > aside a:hover, lc-nav-index > aside a:visited:hover, .lc-nav-index > aside a:hover, .lc-nav-index > aside a:visited:hover {
     color: var(--link-color);
 }
 
-lc-sidebar {
+lc-sidebar, .lc-sidebar {
     grid-column: first-start / first-end;
     grid-row: 1/2;
 }
 
-lc-sidebar, lc-nav-index > aside {
+lc-sidebar, .lc-sidebar, lc-nav-index > aside, .lc-nav-index > aside {
     overflow: auto;
 }
 
@@ -304,17 +307,17 @@ article {
     :root {
         --right-sidebar-width: 0;
     }
-    lc-content {
+    lc-content, .lc-content {
         /*grid-template-rows: 50vh auto;*/
         grid-template-rows: auto;
     }
-    lc-sidebar, lc-nav-index > aside {
+    lc-sidebar, .lc-sidebar, lc-nav-index > aside, .lc-nav-index > aside {
         /*max-height: 40vh;*/
         /*overflow: auto;*/
         /*overflow: hidden;*/
         /*overflow: unset;*/
     }
-    lc-sidebar {
+    lc-sidebar, .lc-sidebar {
         overflow: unset;
     }
     /*lc-nav-index {
@@ -331,10 +334,10 @@ article {
         /*display: block;
         max-height: 10em;*/
     }
-    lc-nav-index.out-nav-index {
+    lc-nav-index.out-nav-index, .lc-nav-index.out-nav-index {
         display: none;
     }
-    lc-sidebar {
+    lc-sidebar, .lc-sidebar {
         grid-row: 1 / 3;
     }
     article {
@@ -345,17 +348,17 @@ article {
     :root {
         --left-sidebar-width: 0;
     }
-    lc-content {
+    lc-content, .lc-content {
         grid-template-rows: unset;
     }
-    lc-nav-index {
+    lc-nav-index, .lc-nav-index {
         display: none;
     }
-    lc-nav-index, lc-sidebar {
+    lc-nav-index, .lc-nav-index, lc-sidebar, .lc-sidebar {
         grid-column: content-start / content-end;
         grid-row: auto;
     }
-    lc-sidebar {
+    lc-sidebar, .lc-sidebar {
         /*grid-row: auto;*/
         grid-row: 2 / 3;
     }
@@ -381,49 +384,78 @@ article h3 {
 article h4 {
     /*font-size: 125%;*/
 }
-/*article a, article a:visited*/
-lc-content a, lc-content a:visited {
+
+
+/* General link styles inside lc-content */
+lc-content a, .lc-content a, lc-content a:visited, .lc-content a:visited {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+/* Specific link styles inside headings within lc-content */
+lc-content h1 > a, .lc-content h1 > a,
+lc-content h2 > a, .lc-content h2 > a,
+lc-content h3 > a, .lc-content h3 > a,
+lc-content h4 > a, .lc-content h4 > a,
+lc-content h5 > a, .lc-content h5 > a,
+lc-content h6 > a, .lc-content h6 > a,
+lc-content h1 > a:visited, .lc-content h1 > a:visited,
+lc-content h2 > a:visited, .lc-content h2 > a:visited,
+lc-content h3 > a:visited, .lc-content h3 > a:visited,
+lc-content h4 > a:visited, .lc-content h4 > a:visited,
+lc-content h5 > a:visited, .lc-content h5 > a:visited,
+lc-content h6 > a:visited, .lc-content h6 > a:visited {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+/* Hover and visited hover styles for links inside headings */
+lc-content h1 > a:hover, .lc-content h1 > a:hover,
+lc-content h2 > a:hover, .lc-content h2 > a:hover,
+lc-content h3 > a:hover, .lc-content h3 > a:hover,
+lc-content h4 > a:hover, .lc-content h4 > a:hover,
+lc-content h5 > a:hover, .lc-content h5 > a:hover,
+lc-content h6 > a:hover, .lc-content h6 > a:hover,
+lc-content h1 > a:visited:hover, .lc-content h1 > a:visited:hover,
+lc-content h2 > a:visited:hover, .lc-content h2 > a:visited:hover,
+lc-content h3 > a:visited:hover, .lc-content h3 > a:visited:hover,
+lc-content h4 > a:visited:hover, .lc-content h4 > a:visited:hover,
+lc-content h5 > a:visited:hover, .lc-content h5 > a:visited:hover,
+lc-content h6 > a:visited:hover, .lc-content h6 > a:visited:hover {
+    text-decoration: underline;
     color: var(--link-color);
 }
 
-article h1 a, article h1 a:visited,
-article h2 a, article h2 a:visited,
-article h3 a, article h3 a:visited,
-article h4 a, article h4 a:visited,
-article h5 a, article h5 a:visited,
-article h6 a, article h6 a:visited {
-    text-decoration: inherit;
-    color: inherit;
-}
-article h2 a:hover, article h2 a:visited:hover,
-article h3 a:hover, article h3 a:visited:hover,
-article h4 a:hover, article h4 a:visited:hover,
-article h5 a:hover, article h5 a:visited:hover,
-article h6 a:hover, article h6 a:visited:hover {
-    text-decoration: underline;
-}
-article h2 a:hover::after, article h2 a:visited:hover::after,
-article h3 a:hover::after, article h3 a:visited:hover::after,
-article h4 a:hover::after, article h4 a:visited:hover::after,
-article h5 a:hover::after, article h5 a:visited:hover::after,
-article h6 a:hover::after, article h6 a:visited:hover::after {
+/* After pseudo-element for links inside headings */
+lc-content h1 > a:hover::after, .lc-content h1 > a:hover::after,
+lc-content h2 > a:hover::after, .lc-content h2 > a:hover::after,
+lc-content h3 > a:hover::after, .lc-content h3 > a:hover::after,
+lc-content h4 > a:hover::after, .lc-content h4 > a:hover::after,
+lc-content h5 > a:hover::after, .lc-content h5 > a:hover::after,
+lc-content h6 > a:hover::after, .lc-content h6 > a:hover::after,
+lc-content h1 > a:visited:hover::after, .lc-content h1 > a:visited:hover::after,
+lc-content h2 > a:visited:hover::after, .lc-content h2 > a:visited:hover::after,
+lc-content h3 > a:visited:hover::after, .lc-content h3 > a:visited:hover::after,
+lc-content h4 > a:visited:hover::after, .lc-content h4 > a:visited:hover::after,
+lc-content h5 > a:visited:hover::after, .lc-content h5 > a:visited:hover::after,
+lc-content h6 > a:visited:hover::after, .lc-content h6 > a:visited:hover::after {
     content: " #";
     margin-left: 0.5em;
     text-decoration: none;
     color: gray;
 }
 
-lc-sidebar ul {
+lc-sidebar ul, .lc-sidebar ul {
     list-style-type: none;
     padding-left: 1em;
 }
 
 /* https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp */
-lc-content *::-webkit-scrollbar {
+lc-content *::-webkit-scrollbar, .lc-content *::-webkit-scrollbar {
     width: 10px;
 }
 
-lc-content *::-webkit-scrollbar-track {
+lc-content *::-webkit-scrollbar-track, .lc-content *::-webkit-scrollbar-track {
     background: none;
 }
 
@@ -1057,13 +1089,13 @@ article > img, article > p > img {
         --text_color: black;
         --paper_color: transparent;
     }
-    lc-content {
+    lc-content, .lc-content {
         display: block;
     }
-    lc-content > * {
+    lc-content > *, .lc-content > * {
         display: none;
     }
-    lc-content > article {
+    lc-content > article, .lc-content > article {
         display: block;
     }
     tex-math, i-math {
@@ -1078,11 +1110,11 @@ article > img, article > p > img {
         color: black;
     }
 
-    lc-nav-index {
+    lc-nav-index, lc-nav-index {
         grid-column: first-start / first-end;
         grid-row: 1 / 2;
     }
-    lc-content {
+    lc-content, .lc-content {
         grid-row: 2 / 3;
     }
 

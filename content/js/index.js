@@ -74,7 +74,8 @@ function make_index() {
 	/** @var {HTMLElement | Null} article ciao */
 	let article = document.getElementsByTagName("article")[0]
 	
-	let indexes = document.getElementsByTagName("lc-nav-index");
+	let indexes = [...document.getElementsByClassName("lc-nav-index"), ...document.getElementsByTagName("lc-nav-index")];
+	console.log(indexes);
 
 	index_elementss = [];
 
