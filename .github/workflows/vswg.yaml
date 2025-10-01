@@ -41,7 +41,6 @@ jobs:
           wget https://github.com/typst/typst/releases/download/v0.13.1/typst-x86_64-unknown-linux-musl.tar.xz
           tar -xf typst-x86_64-unknown-linux-musl.tar.xz
           sudo mv typst-x86_64-unknown-linux-musl/typst /usr/local/bin
-          ls /usr/local/bin/typst
           typst --version
 
       - name: build site

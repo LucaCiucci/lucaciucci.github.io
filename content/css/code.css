@@ -259,8 +259,15 @@ code .squared.red {
 }
 
 
+.hljs-meta {
+    text-decoration: none;
+    color: rgb(175, 175, 175);
+}
 
-
+.hljs-literal {
+    text-decoration: none;
+    color: rgb(209, 105, 105);
+}
 
 
 

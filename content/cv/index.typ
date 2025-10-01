@@ -1,4 +1,4 @@
-#import "../../typst/article.typ": article, article-title, html-output
+#import "../../typst/article.typ": article, html-output
 
 #set document(title: [Luca Ciucci - CV], description: "foo")
 
@@ -6,18 +6,17 @@
     related-articles: (
         ("/about-me/", [About Me]),
     ),
+    date: datetime.today(),
 )
-
-#article-title[Luca Ciucci]
 
 #let info-table = table(columns: 2)[
     home address
 ][
-    #link("https://goo.gl/maps/szUPzgGoyFhpd5kN7")[via Colle da Sole, 37], Torre San Patrizio, FM, Italy
+    #link("https://maps.app.goo.gl/GbPGL3wMfKo2Hs9e9")[via Lucchese, 57], Pisa, PI, Italy
 ][
     residence
 ][
-    #link("https://maps.app.goo.gl/GAsvPHLycYZ1CWkb8")[via Francesco Rismondo, 35], Pisa, PI, Italy
+    #link("https://goo.gl/maps/szUPzgGoyFhpd5kN7")[via Colle da Sole, 37], Torre San Patrizio, FM, Italy
 ][
     phone number
 ][
@@ -84,20 +83,52 @@
 
 = Work Experience
 
-== Software developer \@ BUGSENG s.r.l.
+== Software Developer \@ BUGSENG s.r.l.
 
 Since 2024/09
 
-== research and development \@ Scanny3D s.r.l.
+== Research and Development \@ Scanny3D s.r.l.
 
-- software developer
-- algorithm developer, mainly for 3D reconstruction
-- electronics and mechanics experience
-- 3D printing experience
+//- software developer
+//- algorithm developer, mainly for 3D reconstruction
+//- electronics and mechanics experience
+//- 3D printing experience
 
 = Publications
 
-+ P. Francavilla, M.R. Felici, E. Cisbani, et al, #link("https://doi.org/10.22323/1.314.0822")[_"A low-cost Cherenkov detector to be tested in CERN's T9 beam line"_] (2018)
+#enum(numbering: "[1]", ..{
+    for (k, v) in yaml("pubblications.yaml") {
+        let authors = if v.author.len() == 1 {
+            v.author.at(0)
+        } else if v.author.len() == 2 {
+            v.author.at(0) + " and " + v.author.at(1)
+        } else {
+            //v.author.slice(0, v.author.len() - 1).join(", ") + ", and " + v.author.at(v.author.len() - 1)
+            let first = v.author.at(0);
+            [#first _et al._]
+        }
+        let date = if "date" in v {
+            let date = v.date.split("-"); // YYYY-MM-DD
+            if date.len() == 3 {
+                datetime(year: int(date.at(0)), month: int(date.at(1)), day: int(date.at(2))).display()
+            } else if date.len() == 2 {
+                datetime(year: int(date.at(0)), month: int(date.at(1)), day: 1).display()
+            } else {
+                panic("invalid date format")
+            }
+        } else {
+            []
+        }
+        let url = if "url" in v {
+            [\[Online\]. Available: #link(v.url)[#v.url]]
+        } else {
+            []
+        }
+        (enum.item[#authors: _#(v.title)_. #date #url],)
+    }
+})
+
+//#bibliography("pubblications.yaml", full: true, title: none)
 
 = Education
 

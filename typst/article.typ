@@ -14,6 +14,7 @@
 }
 
 #let html-article-page(
+  title,
   related-articles,
   it
 ) = {
@@ -165,13 +166,75 @@
 #let print = "print" in sys.inputs and sys.inputs.at("print") == "true"
 
 #let article(
+  title: [],
+  date: none,
+  coauthors: (),
   related-articles: (),
   it
 ) = {
   //set heading(numbering: "1.")
+  set document(
+    title: title + (if title == [] { [ - ] } else { [] }) + [Luca Ciucci],
+    date: date,
+  )
+
+  let it = {
+    if title != [] {
+      if html-output {
+        html.elem("h1", title)
+      } else {
+        if not print {
+          align(center, text(color.hsl(216deg, 50%, 71%), size: 2em, title))
+        } else {
+          align(center, text(size: 2em, title))
+        }
+      }
+    }
+
+    let me = link("https://lucaciucci.github.io/")[Luca Ciucci]
+    if html-output {
+      // align right
+      html.elem("div", attrs: (style: "text-align: right;"), me)
+    } else {
+      align(right, me)
+    }
+
+    if date != none {
+      if html-output {
+        // align right
+        html.elem("div", attrs: (style: "text-align: right;"), date.display())
+      } else {
+        align(right, date.display())
+      }
+    }
+
+    if coauthors.len() > 0 {
+
+      if html-output {
+        html.elem("div", attrs: (style: "text-align: right;"), {
+          html.elem("span", [Coauthors:])
+          html.elem("br")
+          for c in coauthors {
+            html.elem("span", c)
+            html.elem("br")
+          }
+        })
+      } else {
+        align(right, [
+          Coauthors:\
+          #for c in coauthors {
+            [#c\ ]
+          }
+        ])
+      }
+    }
+
+    it
+  }
 
   if html-output {
     show: html-article-page(
+      title,
       related-articles,
       it,
     )
@@ -207,13 +270,8 @@
   }
 }
 
-
-#let article-title(body) = if html-output {
-  html.elem("h1", body)
+#let kbd(key) = if html-output {
+  html.elem("kbd", key.text)
 } else {
-  if not print {
-    align(center, text(color.hsl(216deg, 50%, 71%), size: 2em, body))
-  } else {
-    align(center, text(size: 2em, body))
-  }
+  key
 }
