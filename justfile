@@ -10,5 +10,8 @@ dev:
     npm run dev
 
 build:
-    rm -rf dist
+    just clean
     npm run build
+
+clean:
+    rm -rf dist .astro
