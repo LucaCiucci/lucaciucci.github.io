@@ -32,7 +32,7 @@ const meta = {
     pdf="/cv.pdf"
   />
 
-  # Main interests
+  <h1>Main interests</h1>
 
   <p class="cv-section-intro">{cv.interests.intro}</p>
 
@@ -40,19 +40,19 @@ const meta = {
     {cv.interests.groups.map((group: any) => <InterestCard {...group} />)}
   </div>
 
-  # Work experience
+  <h1>Work experience</h1>
 
   <WorkExperienceList entries={cv.work_experience} />
 
-  # Publications
+  <h1>Publications</h1>
 
   <PublicationList publications={publications} />
 
-  # Education
+  <h1>Education</h1>
 
   <Timeline entries={cv.education} imageBasePath="/cv-assets/" />
 
-  # Educational projects
+  <h1>Educational projects</h1>
 
   <Timeline entries={cv.educational_projects} imageBasePath="/cv-assets/" />
 </MainLayout>
