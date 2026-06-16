@@ -1,6 +1,6 @@
 ---
 title: System Monitor
-description: A terminal-based system monitoring dashboard for CPU, RAM, and disk usage.
+description: A GUI system monitoring dashboard made with egui in Rust.
 date: TBD
 tags: [Linux, Bash, System tools]
 featured: 2
@@ -9,6 +9,20 @@ image: /projects/system-monitor/screenshot.png
 imageAlt: System monitor dashboard
 ---
 
-![System monitor dashboard](/projects/system-monitor/screenshot.png)
+import { Hero } from '@luca/astro-ui/components'
+import { HeroActions, HeroButton } from '@luca/astro-ui/components/hero_actions';
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import screenshot from "../../../public/projects/system-monitor/screenshot.png";
 
-A lightweight system monitoring dashboard that displays real-time CPU, memory, and disk usage statistics in the terminal.
+<Hero>
+  <Image class="hero__logo front-image" src={screenshot} alt="System monitor dashboard" />
+  <HeroActions>
+    <HeroButton href="https://github.com/LucaCiucci/birb-system-monitor"><Icon name='lucide:github' />GitHub</HeroButton>
+    <HeroButton href="https://github.com/LucaCiucci/birb-system-monitor/releases" role="primary"><Icon name='lucide:download' />Download</HeroButton>
+  </HeroActions>
+</Hero>
+
+This is a feature-rich and customizable system monitoring dashboard built with [egui](https://github.com/emilk/egui) in Rust.
+
+The goal was just to have a functional system monitor to replace the GNOME system monitor because it's buggy on Ubuntu 24.04. Incidentally, this acquired many features while sill being lightweight (consumes slightly less than GNOME system monitor) while being much more informative, customizable and visually appealing (in my opinion).
