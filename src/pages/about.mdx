@@ -1,0 +1,28 @@
+---
+layout: $layouts/MainLayout.astro
+title: About | Luca Ciucci
+---
+import { PageIntro, ProjectGrid } from '@luca/astro-ui/components';
+import InterestCard from '../components/cv/InterestCard.astro';
+
+<PageIntro
+  eyebrow="About"
+  title="I build software for difficult technical problems."
+  description="My work sits between software engineering, physics, numerical methods, and hands-on experimentation."
+>
+  <a href="/cv">Read the CV</a>
+  <a href="/projects">Browse projects</a>
+</PageIntro>
+
+I am a software developer and physics graduate based in Pisa. I enjoy problems where understanding the underlying system matters as much as writing the code: static analysis, scientific computing, geometry, embedded devices, and measurement systems.
+
+My strongest tools are **C++** and **Rust**, but I care more about choosing a useful model and building a reliable system than about any particular language. Outside software, I am comfortable with electronics, mechanics, CNC machines, 3D printing, and the practical iteration required to make physical things work.
+
+## How I work
+
+<ProjectGrid>
+  <InterestCard title="Understand the system" description="Build a coherent model before optimizing or adding machinery." />
+  <InterestCard title="Measure and verify" description="Prefer evidence, reproducible experiments, and explicit tradeoffs." />
+  <InterestCard title="Cross boundaries" description="Move comfortably between code, mathematics, electronics, and mechanics." />
+  <InterestCard title="Keep learning" description="Use difficult projects as a reason to understand a new domain properly." />
+</ProjectGrid>

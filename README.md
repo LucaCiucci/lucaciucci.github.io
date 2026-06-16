@@ -1,13 +1,40 @@
 # lucaciucci.github.io
-Personal we page
 
-## How to run
-To build the project, run the following command:
+Personal website built with Astro and MDX. The CV page shares its data with the
+Typst PDF generator in the `deps/CV` submodule.
+
+## Requirements
+
+- Node.js 22.12 or newer
+- npm
+- Typst
+- GNU Make
+- ImageMagick
+
+Initialize the CV submodule after cloning:
+
 ```sh
-cargo run
+git submodule update --init --recursive
+npm install
 ```
-if you want live updates, run:
+
+## Development
+
 ```sh
-cargo watch -x run
+npm run dev
 ```
-(install cargo-watch with `cargo install cargo-watch` if you don't have it)
+
+## Production Build
+
+```sh
+npm run build
+```
+
+The build first generates the CV PDF and optimized CV images through
+`make -C deps/CV`, then builds the static Astro site into `dist/`.
+
+Regenerate the local Pagefind search index with:
+
+```sh
+npm run search:dev
+```

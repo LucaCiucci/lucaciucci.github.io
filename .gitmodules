@@ -1,0 +1,6 @@
+[submodule "deps/CV"]
+	path = deps/CV
+	url = https://github.com/LucaCiucci/CV
+[submodule "deps/astro-ui"]
+	path = deps/astro-ui
+	url = https://github.com/LucaCiucci/astro-ui

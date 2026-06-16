@@ -1,0 +1,60 @@
+[1m[33mviolation[0m[1m: custom_properties: custom property precondition may be violated[0m
+   [1m[94m ╭▸ [0mc-rusted-rs-examples/chimera.c:137:5
+    [1m[94m│[0m
+[1m[94m137[0m [1m[94m│[0m     mixer_on(mxp);
+    [1m[94m╰╴[0m    [1m[33m━━━━━━━━━━━━━[0m [1m[33mprecondition requires "door" of `(*mxp)` to be "closed", but current abstract state is unknown[0m
+[1m[33mviolation[0m[1m: custom_properties: custom property precondition may be violated[0m
+   [1m[94m ╭▸ [0mc-rusted-rs-examples/chimera.c:144:5
+    [1m[94m│[0m
+[1m[94m144[0m [1m[94m│[0m     mixer_on(mxp);
+    [1m[94m╰╴[0m    [1m[33m━━━━━━━━━━━━━[0m [1m[33mprecondition requires "cable" of `(*mxp)` to be "attached", but current abstract state is unknown[0m
+[1m[33mviolation[0m[1m: nominal_types: Nominal type assignment mismatch[0m
+  [1m[94m ╭▸ [0mc-rusted-rs-examples/chimera.c:82:16
+   [1m[94m│[0m
+[1m[94m82[0m [1m[94m│[0m         return (int *)0;
+   [1m[94m│[0m                [1m[33m━━━━━━━━[0m [1m[33mExpected nominal type `Mixer_t *`, got `int *`[0m
+   [1m[94m│[0m
+  [1m[94m ⸬  [0mc-rusted-rs-examples/chimera.c:82:9
+   [1m[94m│[0m
+[1m[94m82[0m [1m[94m│[0m         return (int *)0;
+   [1m[94m╰╴[0m        [1m[94m───────────────[0m [1m[94mExpects `Mixer_t *`[0m
+[1m[33mviolation[0m[1m: nominal_types: Nominal type assignment mismatch[0m
+   [1m[94m ╭▸ [0mc-rusted-rs-examples/chimera.c:128:18
+    [1m[94m│[0m
+[1m[94m128[0m [1m[94m│[0m     Mixer_t mx = 42; // violation: `Mixer_t` is nominally distinct from `int`
+    [1m[94m│[0m                  [1m[33m━━[0m [1m[33mExpected nominal type `Mixer_t`, got `int`[0m
+    [1m[94m│[0m
+   [1m[94m ⸬  [0mc-rusted-rs-examples/chimera.c:128:5
+    [1m[94m│[0m
+[1m[94m128[0m [1m[94m│[0m     Mixer_t mx = 42; // violation: `Mixer_t` is nominally distinct from `int`
+    [1m[94m╰╴[0m    [1m[94m───────────────[0m [1m[94mExpects `Mixer_t`[0m
+[1m[33mviolation[0m[1m: cannot borrow `mx` as mutable because it is also borrowed as immutable[0m
+   [1m[94m ╭▸ [0mc-rusted-rs-examples/chimera.c:151:5
+    [1m[94m│[0m
+[1m[94m151[0m [1m[94m│[0m     Mixer_t *write_ref = &mx;
+    [1m[94m│[0m     [1m[33m━━━━━━━━━━━━━━━━━━━━━━━━[0m [1m[33mmutable borrow occurs here[0m
+    [1m[94m│[0m
+   [1m[94m ⸬  [0mc-rusted-rs-examples/chimera.c:148:5
+    [1m[94m│[0m
+[1m[94m148[0m [1m[94m│[0m     const Mixer_t *read_ref = &mx;
+    [1m[94m╰╴[0m    [1m[94m─────────────────────────────[0m [1m[94mprevious immutable borrow occurs here[0m
+[1m[33mviolation[0m[1m: use of moved value[0m
+   [1m[94m ╭▸ [0mc-rusted-rs-examples/chimera.c:161:15
+    [1m[94m│[0m
+[1m[94m161[0m [1m[94m│[0m     mixer_off(mxp);
+    [1m[94m│[0m               [1m[33m━━━[0m [1m[33mthis expression uses a value (`(*mxp)`) that has already been consumed[0m
+    [1m[94m│[0m
+   [1m[94m ⸬  [0mc-rusted-rs-examples/chimera.c:158:5
+    [1m[94m│[0m
+[1m[94m158[0m [1m[94m│[0m     mixer_destroy(mxp);
+    [1m[94m│[0m     [1m[94m──────────────────[0m [1m[94mvalue was consumed here[0m
+    [1m[94m│[0m
+   [1m[94m ⸬  [0mc-rusted-rs-examples/chimera.c:157:25
+    [1m[94m│[0m
+[1m[94m157[0m [1m[94m│[0m void bad_use_after_move(hMixer_t e_own mxp) {
+    [1m[94m╰╴[0m                        [1m[94m──────────────────[0m [1m[94m`(*mxp)` originates from here[0m
+[1m[33mviolation[0m[1m: invalid_move: Move of variable[0m
+   [1m[94m ╭▸ [0mc-rusted-rs-examples/chimera.c:169:5
+    [1m[94m│[0m
+[1m[94m169[0m [1m[94m│[0m     mixer_destroy(stack_handle);
+    [1m[94m╰╴[0m    [1m[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [1m[33mmove of a variable `stack_mixer` occurs here[0m

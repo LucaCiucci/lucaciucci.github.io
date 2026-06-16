@@ -1,0 +1,130 @@
+---
+title: Self Drawing Equation
+description: "A high-school experiment in encoding an equation into a number and making the equation draw itself."
+date: 2018-07
+tags: [Mathematics, Matlab, Desmos]
+featured: 3
+status: archive
+---
+
+import { Callout } from "@luca/astro-ui/components";
+import fs from "fs";
+
+export const eq = fs.readFileSync("./src/content/projects/self-drawing-equation.txt", "utf-8");
+
+This page records a small mathematical toy project I made in high school: an equation that tries to draw its own written representation on the Cartesian plane.
+
+It is mostly an encoding trick wrapped inside an implicit equation. Still, I like it as an old experiment
+
+## Drawing an alphabet
+
+The project started with two goals: have fun, and create a 2D equation that could draw something resembling its own source text on a Cartesian plane.
+
+The motivating thought was deliberately impractical: if a simple enough equation described the whole universe, then a written copy of that equation would also exist inside the universe it describes. This project was a tiny, playful version of that idea: can I write an equation that contains enough information to draw itself as text?
+
+The first step was to define equations for every symbol required by the final expression:
+
+```text
+0123456789+*-/^=()xyteansigfwhrdlo.b,
+```
+
+Each symbol became a small implicit curve. A selector function could then enable the appropriate curve for every encoded character.
+
+<figure>
+  <iframe
+    name="desmos-embed-1"
+    class="square-embed"
+    src="https://www.desmos.com/calculator/ljuc9j9yid?embed"
+    title="Equation alphabet in Desmos"
+  />
+  <figcaption>Equation alphabet in Desmos. This is the actual Desmos instance that I used to define the equations for each symbol. It renders badly because Desmos is not a great tool for this kind of implicit-curve text rendering and mainly detects zero-crossings.</figcaption>
+</figure>
+
+## General approach
+
+The construction is quine-like. In programming, a quine is a program that prints its own source code. Here the goal was similar, but with an implicit equation: when plotted, the equation should render a textual representation of itself.
+
+The trick I used was to encode the equation text into a large number `a`, then decode that same number in two different ways:
+1. On the **left half** of the plane (`x < 0`), the equation decodes `a` in base 38. This reconstructs the symbolic part of the equation: the alphabet, operators, variables, and drawing machinery.
+2. On the **right half** of the plane (`x > 0`), the equation decodes `a` in base 10. This displays the decimal digits of `a` itself.
+
+So the equation does not only draw a formula while hiding its data somewhere else. It also draws the large number used to encode the formula. That is the small self-reference trick at the core of the project.
+
+<details>
+  <summary>Why does the [equation](#full-equation) contain "where a ="?</summary>
+  This choice forced me to include a "`where a = `" part in the rendered text. It would have been theoretically possible to avoid it by splitting the equation rendering into three regions instead of two, but that would have made the equation more complex without making the idea more interesting.
+</details>
+
+## Encoding the equation
+
+The expression had to contain both the drawing machinery and its own encoded text. I associated each character with a digit and concatenated those digits into a very large base-38 integer.
+
+A decoder inside the equation extracts the character at each horizontal position. The corresponding curve is enabled and shifted into place, turning one large number back into a line of mathematical text.
+
+<figure>
+  <iframe
+    class="square-embed"
+    src="https://www.desmos.com/calculator/fblcvmeepu?embed"
+    title="Numeric decoding in Desmos"
+  />
+  <figcaption>Visual representation of the numeric decoding in Desmos.</figcaption>
+</figure>
+
+## Plotting it
+
+A conventional plotter could not handle the resulting expression well. I wrote a MATLAB plotter that scanned the plane pixel by pixel, checking where the implicit curve was satisfied.
+
+Each character's shape is defined using `atan`, `sign`, and exponential functions to create smooth, enclosed curves. The equation evaluates to zero at points that lie on any of the active letter shapes.
+
+The renderer was stupidly slow. It used `fmincon` on every pixel, processed the plane in blocks, and even with parallel execution it only got about 3% of the way through the full range before I gave up.
+
+What it produced shows the first few characters of the equation peeking out from the left edge.
+
+<figure>
+  <img
+    src="/projects/self-drawing-equation/partial-plot.jpg"
+    alt="Partial plot of the self-drawing equation"
+  />
+  <figcaption>Partial plot of the self-drawing equation. Part of the left half of the equation is visible, showing the first few characters of the encoded text.</figcaption>
+</figure>
+
+<Callout variant="note">
+  I never completed the full render. Months later I discovered _Tupper's self-referential formula_ [^tupper-wiki], which is a more famous construction. Tupper's formula is usually described as "drawing itself", although the famous version works by decoding a huge bitmap stored in a constant.
+
+  My experiment is much rougher is a real mathematical quine.
+ </Callout>
+
+[^tupper-wiki]: https://en.wikipedia.org/wiki/Tupper%27s_self-referential_formula
+
+The original source is preserved in this [Google Drive folder](https://drive.google.com/drive/folders/1g3ElFKW5R7j3AypP6Bmjm4mf46tBFjTA?usp=drive_link).
+
+## Full equation
+
+<pre style={{
+  overflow: "initial",
+  textWrap: "initial",
+  wordBreak: "break-word",
+}}>
+{eq}
+</pre>
+
+## Other equation experiments
+
+I also experimented with implicit equations that create fractal-like structures:
+
+```text
+sin(log(((4*x+sqrt(16*x^2-12*(x^2+y^2)))/4)*pi)/log(1.25))
+* sin(log(((4*x-sqrt(16*x^2-12*(x^2+y^2)))/4)*pi)/log(1.25)) = 0
+```
+
+<img
+src="/projects/self-drawing-equation/fractal-1.jpg"
+alt="Fractal-like implicit equation plot"
+/>
+
+One final equation was made as a birthday present. It may not be mathematically elegant, but it was certainly original.
+
+<img
+src="/projects/self-drawing-equation/serena.jpg"
+alt="Equation drawn as a birthday present"
+/>

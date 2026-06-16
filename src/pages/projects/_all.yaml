@@ -1,0 +1,63 @@
+_defs:
+  featured:
+    top: &top 1
+    medium: &medium 2
+    low: &low 3
+
+projects:
+- href: /projects/c-rusted-rs
+- title: Magnetic Monopoles
+  href: /projects/bachelor-thesis
+- title: Other Instagram projects...
+- title: Other github projects...
+- title: Wright fliers
+- title: High voltag
+- title: Mercury on Aluminum
+- title: Make a travels section
+- title: Diffrazione
+- title: Razzo
+- title: Scratch hologram
+- title: Lab2 resistance measurement
+- title: Tron-like game
+- title: Electric field simulator
+- title: Personal Website
+- title: Pressure Mat
+- title: Battery Pack
+- title: Kart
+- title: 3D Printer
+- title: VDU posture monitor
+- title: BBF
+- title: Levitation
+- title: MPU6050 Tracking
+  href: /projects/mpu6050-td
+- title: regui
+- title: OPN
+
+
+- title: Expline
+- title: Structured Light
+- title: Solar Monitor
+- title: Interval-arithmetic equation plotter
+- title: Pac-Man TCO
+  href: /projects/pac-man-tco
+- title: Interferometer
+- title: Interference spot
+- title: N-body Simulation
+- title: CERN BL4S
+- title: Self Drawing Equation
+  href: /projects/self-drawing-equation
+- title: Self Balancing Robot
+- title: System Monitor
+  href: /projects/system-monitor
+
+
+
+- title: Nitrogen Laser
+  href: /projects/nitrogen-laser
+- title: Bicycle Posture Analyzer
+  date: TBD
+  status: archive
+  featured: *medium
+  description: A browser-based MediaPipe prototype for measuring cycling posture from a camera or video.
+  href: /apps/bicycle-posture-analyzer/index.html
+  tags: [Computer vision, MediaPipe, Web app]

@@ -1,0 +1,58 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { Timeline } from '@luca/astro-ui/components';
+import CvHero from '../../components/cv/CvHero.astro';
+import InterestCard from '../../components/cv/InterestCard.astro';
+import PublicationList from '../../components/cv/PublicationList.astro';
+import WorkExperienceList from '../../components/cv/WorkExperienceList.astro';
+import cv from './cv-data.yaml';
+import publications from './pubblications.yaml';
+import './style.css';
+
+const meta = {
+  description: cv.summary,
+  image: `/cv-assets/${cv.portrait}`,
+  image_alt: cv.name,
+};
+---
+<MainLayout
+  title="Luca Ciucci — Curriculum Vitae"
+  show_page_nav={true}
+  heading_depth={1}
+  meta={meta}
+>
+  <CvHero
+    name={cv.name}
+    info={cv.info}
+    role={cv.role}
+    summary={cv.summary}
+    keywords={cv.keywords}
+    portrait={`/cv-assets/${cv.portrait}`}
+    github={cv.socials.find((social: any) => social.platform === 'GitHub')?.link}
+    pdf="/cv.pdf"
+  />
+
+  # Main interests
+
+  <p class="cv-section-intro">{cv.interests.intro}</p>
+
+  <div class="cv-interests">
+    {cv.interests.groups.map((group: any) => <InterestCard {...group} />)}
+  </div>
+
+  # Work experience
+
+  <WorkExperienceList entries={cv.work_experience} />
+
+  # Publications
+
+  <PublicationList publications={publications} />
+
+  # Education
+
+  <Timeline entries={cv.education} imageBasePath="/cv-assets/" />
+
+  # Educational projects
+
+  <Timeline entries={cv.educational_projects} imageBasePath="/cv-assets/" />
+</MainLayout>

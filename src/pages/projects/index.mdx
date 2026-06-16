@@ -1,0 +1,43 @@
+---
+layout: $layouts/MainLayout.astro
+title: Projects
+---
+import { PageIntro, ProjectCard, ProjectGrid } from '@luca/astro-ui/components';
+import all_projects_data from './_all.yaml';
+import { mergeProjects } from '../../utils/projects';
+
+export const all_projects = await mergeProjects(all_projects_data.projects);
+
+<PageIntro
+  eyebrow="Project archive"
+  title="Projects"
+  description="Experiments, software, research work, and things built to answer questions that would not leave me alone."
+/>
+
+export function render_card(project) {
+  return (<ProjectCard
+    title={project.title}
+    description={project.description}
+    href={project.href}
+    meta={project.date}
+    tags={project.tags}
+    status={project.status}
+    image={project.image}
+    imageAlt={project.imageAlt}
+  />)
+}
+
+<ProjectGrid>
+  {all_projects.filter(project => project.featured).sort((a, b) => a.featured - b.featured).map(render_card)}
+</ProjectGrid>
+
+## More work
+
+Many newer projects currently live primarily in source repositories or professional work. The archive will grow as those stories are documented properly rather than added as an uncurated list.
+
+<details>
+<summary>All projects</summary>
+<ProjectGrid>
+  {all_projects.sort((a, b) => new Date(b.date) - new Date(a.date)).map(render_card)}
+</ProjectGrid>
+</details>

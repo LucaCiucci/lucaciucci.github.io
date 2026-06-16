@@ -1,0 +1,17 @@
+---
+layout: $layouts/MainLayout.astro
+title: Research | Luca Ciucci
+---
+import { PageIntro } from '@luca/astro-ui/components';
+import PublicationList from '../components/cv/PublicationList.astro';
+import publications from './cv/pubblications.yaml';
+
+<PageIntro
+  eyebrow="Research"
+  title="Research and publications"
+  description="Work spanning software engineering for safety-critical systems, scientific computing, and experimental physics."
+>
+  <a href="/cv#publications">Research in context</a>
+</PageIntro>
+
+<PublicationList publications={publications} />

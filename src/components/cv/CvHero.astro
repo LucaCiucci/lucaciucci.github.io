@@ -1,0 +1,379 @@
+---
+import { DelaunayBackground } from '@luca/astro-ui/components';
+
+interface Address {
+  street?: string;
+  number?: number | string;
+  city?: string;
+  country?: string;
+  link?: string;
+}
+
+interface ContactInfo {
+  home_address: Address;
+  residence: Address;
+  phone: string;
+  mails: string[];
+}
+
+interface Props {
+  name: string;
+  info: ContactInfo;
+  role: string;
+  summary: string;
+  keywords?: string[];
+  portrait?: string;
+  github?: string;
+  location?: string;
+  pdf?: string;
+}
+
+const {
+  name,
+  info,
+  role,
+  summary,
+  keywords = [],
+  portrait = '/img/me.jpg',
+  github = 'https://github.com/LucaCiucci',
+  location = 'Pisa, Italy',
+  pdf,
+} = Astro.props;
+
+const formatAddress = (address: Address) => {
+  const street = address.street ? `${address.street}, ${address.number}` : '';
+  const place = [address.city, address.country].filter(Boolean).join(', ');
+  return { street, place };
+};
+---
+
+<section class="hero" aria-labelledby="cv-name">
+  <DelaunayBackground class="hero-pattern" density={68} animated />
+
+  <div class="copy">
+    <p class="kicker">Curriculum vitae</p>
+    <p class="name" id="cv-name">{name}</p>
+    <p class="role">{role}</p>
+    <p class="summary">{summary}</p>
+    {keywords.length > 0 && (
+      <ul class="keywords" aria-label="Keywords">
+        {keywords.map(kw => <li>{kw}</li>)}
+      </ul>
+    )}
+    <div class="actions">
+      <a class="action primary" href={`mailto:${info.mails[0]}`}>Get in touch</a>
+      <a class="action" href={github}>GitHub ↗</a>
+      {pdf && <a class="action" href={pdf} download>Download PDF ↓</a>}
+    </div>
+  </div>
+
+  <img class="portrait" src={portrait} alt={`Portrait of ${name}`} />
+
+  <div class="contact-strip">
+    <div>
+      <span>Email</span>
+      <a href={`mailto:${info.mails[0]}`}>{info.mails[0]}</a>
+    </div>
+    <div>
+      <span>Phone</span>
+      <a href={`tel:${info.phone.replaceAll(' ', '')}`}>{info.phone}</a>
+    </div>
+    <div>
+      <span>Based in</span>
+      <span>{location}</span>
+    </div>
+    <details>
+      <summary>More contact details</summary>
+      <div class="contact-details">
+        {[
+          ['Home address', info.home_address],
+          ['Residence', info.residence],
+        ].map(([label, address]) => {
+          const formatted = formatAddress(address as Address);
+          return (
+            <div>
+              <strong>{label}</strong>
+              {(address as Address).link
+                ? <a href={(address as Address).link}>{formatted.street}</a>
+                : formatted.street}
+              <span>{formatted.place}</span>
+            </div>
+          );
+        })}
+        <div>
+          <strong>Other emails</strong>
+          {info.mails.slice(1).map(mail => <a href={`mailto:${mail}`}>{mail}</a>)}
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: grid;
+    overflow: hidden;
+    border: 1px solid var(--border-strong);
+    border-radius: 14px;
+    background:
+      radial-gradient(circle at 88% 15%, var(--active-accent), transparent 13rem),
+      var(--cv-surface);
+    box-shadow: var(--shadow-card);
+    grid-template-columns: minmax(0, 1fr) 142px;
+  }
+
+  .copy,
+  .portrait,
+  .contact-strip {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero :global(.hero-pattern) {
+    opacity: 0.62;
+  }
+
+  .copy {
+    align-self: center;
+    padding: 1.6rem 1.8rem;
+  }
+
+  .kicker {
+    margin: 0 0 0.35rem;
+    color: var(--accent);
+    font-size: 0.68rem;
+    font-weight: 750;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .name {
+    margin: 0;
+    font-size: clamp(2.25rem, 5vw, 3.25rem);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.06em;
+  }
+
+  .role {
+    margin: 0.55rem 0 0;
+    color: var(--text-soft);
+    font-size: clamp(0.92rem, 2vw, 1.08rem);
+    font-weight: 650;
+  }
+
+  .summary {
+    max-width: 32rem;
+    margin: 0.75rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0.7rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .keywords li {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.12rem 0.55rem;
+    background: var(--surface-card);
+    color: var(--text-soft);
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 1rem;
+  }
+
+  .action {
+    display: inline-flex;
+    min-height: 34px;
+    align-items: center;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    padding: 0 0.75rem;
+    color: var(--text);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .action:hover {
+    border-color: var(--border-accent);
+    background: var(--hover-accent);
+  }
+
+  .action.primary {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: color-mix(in srgb, var(--accent) 15%, black);
+  }
+
+  .action.primary:hover {
+    background: color-mix(in srgb, var(--accent) 80%, white);
+    color: color-mix(in srgb, var(--accent) 15%, black);
+  }
+
+  .portrait {
+    width: 100%;
+    height: 100%;
+    min-height: 218px;
+    border-left: 1px solid var(--border-strong);
+    object-fit: cover;
+  }
+
+  .contact-strip {
+    display: grid;
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--border-strong);
+    background: var(--surface-cv-strip);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .contact-strip > div {
+    display: grid;
+    min-width: 0;
+    padding: 0.65rem 1rem;
+    gap: 0.05rem;
+  }
+
+  .contact-strip > div + div {
+    border-left: 1px solid var(--border);
+  }
+
+  .contact-strip span:first-child {
+    color: var(--text-muted);
+    font-size: 0.62rem;
+    font-weight: 750;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .contact-strip a {
+    overflow: hidden;
+    color: var(--text);
+    font-size: 0.78rem;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .contact-strip details {
+    grid-column: 1 / -1;
+    margin: 0;
+    border: 0;
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  .contact-strip details summary {
+    padding: 0.4rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+  }
+
+  .contact-strip details[open] summary {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .contact-details {
+    display: grid;
+    padding: 1rem 1.2rem 1.25rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .contact-details > div {
+    display: grid;
+    align-content: start;
+    color: var(--text-soft);
+    font-size: 0.82rem;
+    gap: 0.25rem;
+  }
+
+  .contact-details strong {
+    color: var(--text);
+  }
+
+  @media (max-width: 760px) {
+    .hero {
+      position: relative;
+      grid-template-columns: 1fr;
+    }
+
+    .copy {
+      padding: 1.25rem;
+      padding-right: 5.8rem;
+    }
+
+    .name {
+      font-size: clamp(2.1rem, 10vw, 2.65rem);
+    }
+
+    .role {
+      max-width: 15rem;
+      font-size: 0.88rem;
+    }
+
+    .summary {
+      width: calc(100% + 4.55rem);
+      margin-top: 0.7rem;
+      font-size: 0.82rem;
+    }
+
+    .actions {
+      width: calc(100% + 4.55rem);
+    }
+
+    .portrait {
+      position: absolute;
+      top: 1.15rem;
+      right: 1.15rem;
+      width: 64px;
+      height: 76px;
+      min-height: 0;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      object-position: center 20%;
+    }
+
+    .contact-strip {
+      position: relative;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .contact-strip > div:first-child {
+      grid-column: 1 / -1;
+    }
+
+    .contact-strip > div:nth-child(2),
+    .contact-strip > div:nth-child(3) {
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-strip > div:nth-child(2) {
+      border-left: 0;
+    }
+
+    .contact-details {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

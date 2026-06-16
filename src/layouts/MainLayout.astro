@@ -1,0 +1,66 @@
+---
+import { MainLayout as Layout, type PageMeta } from "@luca/astro-ui/layouts";
+import type { NavItem, SocialLink } from "@luca/astro-ui/components";
+import "../styles/theme-override.css";
+
+interface PageHeading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  title?: string;
+  show_page_nav?: boolean;
+  heading_depth?: 1 | 2 | 3;
+  top_notice?: { text: string; kind?: 'orange' };
+  meta?: PageMeta;
+  headings?: PageHeading[];
+}
+
+const { title, show_page_nav, heading_depth, top_notice, meta = {}, headings } = Astro.props as Props;
+
+//meta.image = meta.image ?? '/og-image.png';
+meta.image = meta.image ?? '/img/universe_in_a_jar_v2.png';
+
+const navItems: NavItem[] = [
+	{ href: '/', label: 'Home' },
+	{ href: '/cv', label: 'CV' },
+	{ href: '/projects', label: 'Projects' },
+	{ href: '/about', label: 'About Me' },
+	{ href: '/research', label: 'Research' },
+	{ href: 'https://github.com/LucaCiucci', label: 'GitHub' },
+];
+
+const socialLinks: SocialLink[] = [
+  {
+    label: 'GitHub',
+    href: 'https://github.com/LucaCiucci',
+    icon: 'lucide:github',
+  },
+  {
+    label: 'Email',
+    href: 'mailto:luca.ciucci99@gmail.com',
+    icon: 'lucide:mail',
+  },
+];
+
+const canonical_url = new URL(Astro.url.pathname, 'https://lucaciucci.github.io').href;
+---
+<Layout
+  site_name="Luca Ciucci"
+  canonical_url={canonical_url}
+  title={title ? `${title} | Luca Ciucci` : 'Luca Ciucci'}
+  author="Luca Ciucci"
+  theme_color="#0f172a"
+  meta={meta}
+  headings={headings}
+  show_page_nav={show_page_nav}
+  heading_depth={heading_depth}
+  top_notice={top_notice}
+  nav_items={navItems}
+  social_links={socialLinks}
+  sitemap="/sitemap-index.xml"
+>
+  <slot />
+</Layout>

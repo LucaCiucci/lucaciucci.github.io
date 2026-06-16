@@ -1,0 +1,62 @@
+---
+import { Md } from '@luca/astro-ui/components';
+import InterestTag, { type InterestItem } from './InterestTag.astro';
+import TagList from './TagList.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  items?: Array<InterestItem | string>;
+}
+
+const { title, description, items = [] } = Astro.props;
+---
+
+<article class="card">
+  <h2><Md kind="inline" text={title} /></h2>
+  <p><Md kind="inline" text={description} /></p>
+  {items.length > 0 && (
+    <TagList>
+      {items.map(item => <InterestTag item={item} />)}
+    </TagList>
+  )}
+</article>
+
+<style>
+  .card {
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 1rem 1.1rem;
+    background:
+      linear-gradient(100deg, var(--hover-accent-subtle), transparent 55%),
+      var(--cv-surface);
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1rem;
+    letter-spacing: 0;
+  }
+
+  p {
+    margin: 0.35rem 0 0;
+    color: var(--text-soft);
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+
+  p :global(code) {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.08em 0.3em;
+    background: var(--input-bg);
+    color: var(--text);
+    font-size: 0.9em;
+  }
+
+  p :global(a) {
+    color: var(--accent);
+  }
+</style>

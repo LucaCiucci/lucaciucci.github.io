@@ -1,0 +1,34 @@
+---
+layout: $layouts/MainLayout.astro
+title: Support My Work | Luca Ciucci
+---
+import { PageIntro, ProjectCard, ProjectGrid } from '@luca/astro-ui/components';
+
+<PageIntro
+  eyebrow="Support"
+  title="Help useful work travel further."
+  description="The most valuable support is often attention, feedback, or a thoughtful contribution."
+/>
+
+<ProjectGrid>
+  <ProjectCard
+    title="Explore and share"
+    description="Browse the project archive and share anything that may be useful or interesting to someone else."
+    href="/projects"
+    tags={['Projects', 'Experiments']}
+  />
+  <ProjectCard
+    title="Contribute on GitHub"
+    description="Open an issue, suggest an improvement, or contribute directly to one of my public projects."
+    href="https://github.com/LucaCiucci"
+    tags={['Code', 'Feedback']}
+    status="external"
+  />
+  <ProjectCard
+    title="Start a conversation"
+    description="Get in touch about research, technical collaboration, or an interesting problem."
+    href="mailto:luca.ciucci99@gmail.com"
+    tags={['Research', 'Collaboration']}
+    status="external"
+  />
+</ProjectGrid>

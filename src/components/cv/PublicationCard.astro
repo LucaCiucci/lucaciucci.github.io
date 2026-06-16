@@ -1,0 +1,165 @@
+---
+import { formatPublicationDate } from './formatters';
+
+interface Publication {
+  type: string;
+  title: string;
+  author: string[];
+  date: Date | string;
+  url?: string;
+  booktitle?: string;
+  publisher?: string;
+  pages?: string | number;
+  isbn?: string;
+}
+
+interface Props {
+  publication: Publication;
+  index: number;
+}
+
+const { publication: pub, index } = Astro.props;
+const authors = pub.author.length <= 2 ? pub.author.join(' and ') : `${pub.author[0]} et al.`;
+const venue = [pub.booktitle, pub.publisher, pub.pages && `pp. ${pub.pages}`].filter(Boolean).join(' · ');
+---
+
+<article class="publication">
+  <span class="number">{String(index + 1).padStart(2, '0')}</span>
+  <div class="body">
+    <div class="heading">
+      <span class="type">{pub.type}</span>
+      <span>{formatPublicationDate(pub.date)}</span>
+    </div>
+    <h2>{pub.url ? <a href={pub.url}>{pub.title}</a> : pub.title}</h2>
+    <p class="authors">{authors}</p>
+    {venue && <p class="venue">{venue}</p>}
+    <div class="meta">
+      {pub.isbn && <span>ISBN {pub.isbn}</span>}
+      {pub.url && <a href={pub.url}>Open publication <span aria-hidden="true">↗</span></a>}
+    </div>
+  </div>
+</article>
+
+<style>
+  .publication {
+    position: relative;
+    display: grid;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background:
+      linear-gradient(100deg, var(--hover-accent-subtle), transparent 40%),
+      var(--cv-surface);
+    grid-template-columns: 3.4rem minmax(0, 1fr);
+  }
+
+  .number {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    border-right: 1px solid var(--border);
+    padding-top: 1.25rem;
+    background: color-mix(in srgb, var(--accent) 2.5%, transparent);
+    color: var(--accent);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .body {
+    min-width: 0;
+    padding: 1.05rem 1.15rem;
+  }
+
+  .heading {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    gap: 0.55rem;
+  }
+
+  .type {
+    border: 1px solid var(--focus-accent);
+    border-radius: 999px;
+    padding: 0.12rem 0.45rem;
+    color: var(--accent);
+    font-size: 0.62rem;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+
+  h2 a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  h2 a:hover {
+    color: var(--accent);
+  }
+
+  .authors {
+    margin: 0.45rem 0 0;
+    color: var(--text-soft);
+    font-size: 0.8rem;
+  }
+
+  .venue {
+    margin: 0.18rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-style: italic;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 1.7rem;
+    margin-top: 0.7rem;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    gap: 0.5rem;
+  }
+
+  .meta a {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.25rem 0.55rem;
+    color: var(--accent);
+    font-weight: 650;
+    text-decoration: none;
+    gap: 0.3rem;
+  }
+
+  .meta a:hover {
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+    background: color-mix(in srgb, var(--accent) 6%, transparent);
+  }
+
+  @media (max-width: 760px) {
+    .publication {
+      grid-template-columns: 2.4rem minmax(0, 1fr);
+    }
+
+    .number {
+      padding-top: 1.1rem;
+    }
+
+    .body {
+      padding: 0.9rem;
+    }
+  }
+</style>

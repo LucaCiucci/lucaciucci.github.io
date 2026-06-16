@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090b0d">
+  <title>Bicycle Posture Analyzer</title>
+  <link rel="stylesheet" href="./style/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div>
+      <p class="eyebrow">Experimental web app</p>
+      <h1>Bicycle Posture Analyzer</h1>
+    </div>
+    <a href="/projects">Back to projects</a>
+  </header>
+
+  <main>
+    <section class="display" aria-label="Camera and posture overlay">
+      <video controls autoplay muted playsinline class="input_video"></video>
+      <canvas class="output_canvas" width="800" height="600"></canvas>
+      <p class="camera-note">Camera processing happens locally in your browser.</p>
+    </section>
+
+    <aside class="controls">
+      <div>
+        <label for="side">Measured side</label>
+        <select name="side" id="side">
+          <option value="-">Select a side</option>
+          <option value="right">Right</option>
+          <option value="left">Left</option>
+        </select>
+      </div>
+      <div>
+        <label for="file-input">Analyze a recording</label>
+        <input type="file" id="file-input" accept="video/*">
+      </div>
+      <button id="my-button" type="button">Download measurements</button>
+      <p>This archived prototype uses MediaPipe Pose to estimate joint positions and calculate cycling posture angles.</p>
+    </aside>
+  </main>
+
+  <script type="module" src="./src/renderer.js"></script>
+</body>
+</html>

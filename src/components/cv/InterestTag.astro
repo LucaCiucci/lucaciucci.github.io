@@ -1,0 +1,111 @@
+---
+import { Md } from '@luca/astro-ui/components';
+
+export interface InterestItem {
+  title: string;
+  desc?: string;
+  long_description?: string;
+  children?: Array<InterestItem | string>;
+}
+
+interface Props {
+  item: InterestItem | string;
+}
+
+const normalized: InterestItem = typeof Astro.props.item === 'string'
+  ? { title: Astro.props.item }
+  : Astro.props.item;
+const children = normalized.children ?? [];
+const interactive = Boolean(normalized.desc || normalized.long_description || children.length);
+---
+
+{interactive ? (
+  <details class="tag interactive">
+    <summary><Md kind="inline" text={normalized.title} /></summary>
+    <div class="details">
+      {normalized.desc && <p><Md kind="inline" text={normalized.desc} /></p>}
+      {normalized.long_description && <Md kind="block" text={normalized.long_description} />}
+      {children.length > 0 && (
+        <div class="nested-tags">
+          {children.map(item => <Astro.self item={item} />)}
+        </div>
+      )}
+    </div>
+  </details>
+) : (
+  <span class="tag"><Md kind="inline" text={normalized.title} /></span>
+)}
+
+<style>
+  .tag {
+    display: inline-flex;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.26rem 0.62rem;
+    background: color-mix(in srgb, white 2.5%, transparent);
+    color: var(--text-soft);
+    font-size: 0.78rem;
+    font-weight: 650;
+    line-height: 1.35;
+  }
+
+  details.interactive {
+    display: block;
+    margin: 0;
+    border-radius: 999px;
+    padding: 0;
+    background: transparent;
+  }
+
+  .interactive summary {
+    border: 0;
+    border-radius: 999px;
+    padding: 0.26rem 0.62rem;
+    color: var(--accent);
+    font-size: 0.78rem;
+    line-height: 1.35;
+    list-style: none;
+  }
+
+  .interactive:not([open]) summary::before {
+    content: "+";
+    margin-right: 0.35rem;
+  }
+
+  .interactive[open] {
+    width: 100%;
+    border-color: color-mix(in srgb, var(--accent) 38%, transparent);
+    border-radius: 8px;
+    background: var(--hover-accent-subtle);
+  }
+
+  .interactive[open] summary {
+    border-bottom: 1px solid var(--border);
+    border-radius: 8px 8px 0 0;
+  }
+
+  .interactive[open] summary::before {
+    content: "−";
+    margin-right: 0.35rem;
+  }
+
+  .details {
+    padding: 0.55rem 0.7rem 0.65rem;
+    color: var(--text-soft);
+    font-size: 0.82rem;
+    font-weight: 450;
+    line-height: 1.5;
+  }
+
+  .details p {
+    margin: 0;
+  }
+
+  .nested-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin-top: 0.55rem;
+    gap: 0.4rem;
+  }
+</style>

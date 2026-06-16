@@ -1,0 +1,31 @@
+{
+  "name": "lucaciucci.github.io",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "prebuild": "make -C deps/CV",
+    "build": "astro build",
+    "preview": "astro preview",
+    "search:dev": "astro build && pagefind --site dist --output-path public/pagefind",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^6.0.2",
+    "@astrojs/sitemap": "^3.7.3",
+    "@iconify-json/lucide": "^1.2.111",
+    "@luca/astro-ui": "file:deps/astro-ui",
+    "astro": "^6.4.4",
+    "astro-icon": "^1.1.5",
+    "markdown-it": "^14.2.0",
+    "rehype-autolink-headings": "^7.1.0",
+    "rehype-slug": "^6.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-yaml": "^5.0.0",
+    "pagefind": "^1.5.2"
+  }
+}

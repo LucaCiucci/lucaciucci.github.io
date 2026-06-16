@@ -1,0 +1,129 @@
+---
+import { Md } from '@luca/astro-ui/components';
+import InterestTag, { type InterestItem } from './InterestTag.astro';
+import TagList from './TagList.astro';
+import { formatMonth } from './formatters';
+
+interface Experience {
+  role: string;
+  company: string;
+  period?: { from: Date | string; to?: Date | string };
+  location?: string;
+  short_description?: string;
+  description?: string;
+  main_technologies: (InterestItem | string)[],
+  additional_technologies: (InterestItem | string)[],
+}
+
+interface Props {
+  entries: Experience[];
+}
+
+const { entries } = Astro.props;
+---
+
+<div class="list">
+  {entries.map(entry => (
+    <article class="experience">
+      <div class="meta">
+        <span>
+          {entry.period
+            ? `${formatMonth(entry.period.from)}${entry.period.to ? ` — ${formatMonth(entry.period.to)}` : ''}`
+            : ''}
+        </span>
+        {entry.location && <span>{entry.location}</span>}
+      </div>
+      <div class="body">
+        <p class="company">{entry.company}</p>
+        <h2>{entry.role}</h2>
+        {entry.short_description && <p><Md kind="inline" text={entry.short_description} /></p>}
+        {entry.description && <div class="rich-text"><Md kind="block" text={entry.description} /></div>}
+        {entry.main_technologies && entry.main_technologies.length > 0 && (
+          <TagList>
+            {entry.main_technologies.map(tech => (
+              <InterestTag item={tech} />
+            ))}
+          </TagList>
+        )}
+        {entry.additional_technologies && entry.additional_technologies.length > 0 && (<details class="additional-tech">
+          <summary>Additional technologies</summary>
+          <TagList>
+            {entry.additional_technologies.map(tech => (
+              <InterestTag item={tech} />
+            ))}
+          </TagList>
+        </details>)}
+      </div>
+    </article>
+  ))}
+</div>
+
+<style>
+  .list {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .experience {
+    display: grid;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--cv-surface);
+    grid-template-columns: 175px minmax(0, 1fr);
+  }
+
+  .meta {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+    padding: 1.3rem;
+    background: var(--cv-surface-soft);
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    font-weight: 650;
+    gap: 0.35rem;
+  }
+
+  .body {
+    padding: 1.25rem 1.4rem;
+  }
+
+  .company {
+    margin: 0;
+    color: var(--accent);
+    font-size: 0.76rem;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0.2rem 0 0.7rem;
+    font-size: 1.25rem;
+  }
+
+  .body > p:not(.company),
+  .rich-text :global(p) {
+    margin: 0.45rem 0 0;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 760px) {
+    .experience {
+      grid-template-columns: 1fr;
+    }
+
+    .meta {
+      flex-direction: row;
+      justify-content: space-between;
+      border-right: 0;
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+    }
+
+    .body {
+      padding: 1rem;
+    }
+  }
+</style>

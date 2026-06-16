@@ -1,0 +1,22 @@
+---
+import PublicationCard from './PublicationCard.astro';
+
+interface Props {
+  publications: Record<string, any>;
+}
+
+const { publications } = Astro.props;
+---
+
+<div class="list">
+  {Object.entries(publications).map(([, publication], index) => (
+    <PublicationCard publication={publication} index={index} />
+  ))}
+</div>
+
+<style>
+  .list {
+    display: grid;
+    gap: 0.8rem;
+  }
+</style>

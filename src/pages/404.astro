@@ -1,0 +1,15 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import { PageIntro } from '@luca/astro-ui/components';
+---
+
+<MainLayout title="Not Found | Luca Ciucci">
+  <PageIntro
+    eyebrow="404"
+    title="This page is not here."
+    description="The route may have moved during the site migration, or it may never have existed."
+  >
+    <a href="/">Return home</a>
+    <a href="/projects">Browse projects</a>
+  </PageIntro>
+</MainLayout>

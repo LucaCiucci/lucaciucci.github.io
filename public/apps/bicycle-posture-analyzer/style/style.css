@@ -1,0 +1,105 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  background: #090b0d;
+  color: #f6fbfc;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: radial-gradient(circle at 65% 0%, rgba(34, 216, 204, 0.1), transparent 30rem), #090b0d;
+}
+
+header {
+  display: flex;
+  min-height: 72px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(182, 217, 219, 0.14);
+  padding: 0.8rem 1.2rem;
+  gap: 1rem;
+}
+
+h1, .eyebrow { margin: 0; }
+h1 { font-size: clamp(1.2rem, 4vw, 1.75rem); letter-spacing: -0.04em; }
+
+.eyebrow, label {
+  color: #22d8cc;
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+a {
+  border: 1px solid rgba(182, 217, 219, 0.24);
+  border-radius: 7px;
+  padding: 0.38rem 0.65rem;
+  color: #c6d4d7;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+main {
+  display: grid;
+  min-height: calc(100vh - 72px);
+  grid-template-columns: minmax(0, 1fr) 280px;
+}
+
+.display {
+  position: relative;
+  min-height: 28rem;
+  overflow: hidden;
+  background: #050607;
+}
+
+video { width: 100%; height: 100%; object-fit: contain; }
+.output_canvas { position: absolute; top: 0; left: 0; display: block; pointer-events: none; }
+
+.camera-note {
+  position: absolute;
+  bottom: 0.8rem;
+  left: 0.8rem;
+  margin: 0;
+  border: 1px solid rgba(182, 217, 219, 0.14);
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  background: rgba(9, 11, 13, 0.75);
+  color: #9aa7ad;
+  font-size: 0.68rem;
+}
+
+.controls {
+  display: grid;
+  align-content: start;
+  border-left: 1px solid rgba(182, 217, 219, 0.14);
+  padding: 1.2rem;
+  background: #101418;
+  gap: 1.2rem;
+}
+
+.controls div { display: grid; gap: 0.4rem; }
+
+select, input, button {
+  width: 100%;
+  border: 1px solid rgba(182, 217, 219, 0.24);
+  border-radius: 7px;
+  padding: 0.55rem 0.65rem;
+  background: #090b0d;
+  color: #f6fbfc;
+  font: inherit;
+}
+
+button { border-color: #22d8cc; background: #22d8cc; color: #06110f; font-weight: 750; cursor: pointer; }
+.controls p { margin: 0; color: #9aa7ad; font-size: 0.78rem; line-height: 1.55; }
+
+@media (max-width: 760px) {
+  header { min-height: 64px; }
+  main { min-height: calc(100vh - 64px); grid-template-columns: 1fr; }
+  .display { min-height: 55vh; }
+  .controls { border-top: 1px solid rgba(182, 217, 219, 0.14); border-left: 0; }
+}
