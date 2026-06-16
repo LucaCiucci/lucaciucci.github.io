@@ -33,10 +33,21 @@ jobs:
         with:
           typst-version: ^0.14
 
-      - name: Install imagemagic
+      - name: Install system dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y imagemagick
+          sudo apt-get install -y imagemagick fonts-freefont-ttf unzip
+
+      - name: Install Font Awesome 7 desktop fonts
+        run: |
+          TEMP_DIR=$(mktemp -d)
+          cd "$TEMP_DIR"
+          wget -q "https://use.fontawesome.com/releases/v7.2.0/fontawesome-free-7.2.0-desktop.zip" -O fa.zip
+          unzip -q fa.zip
+          mkdir -p ~/.fonts
+          find . -name "*.otf" -exec cp {} ~/.fonts/ \;
+          fc-cache -f
+          rm -rf "$TEMP_DIR"
 
       - name: Install dependencies
         run: npm ci
