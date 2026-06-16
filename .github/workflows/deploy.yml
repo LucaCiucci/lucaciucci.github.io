@@ -31,7 +31,7 @@ jobs:
       - name: Setup Typst
         uses: typst-community/setup-typst@v5
         with:
-          typst-version: ^0.13
+          typst-version: ^0.14
 
       - name: Install imagemagic
         run: |
