@@ -9,7 +9,7 @@
     "dev": "astro dev",
     "prebuild": "make -C deps/CV",
     "build": "astro build",
-    "postbuild": "pagefind --site dist --output-path public/pagefind",
+    "postbuild": "pagefind --site dist --output-path dist/pagefind",
     "preview": "astro preview",
     "search:dev": "astro build && pagefind --site dist --output-path public/pagefind",
     "astro": "astro"
