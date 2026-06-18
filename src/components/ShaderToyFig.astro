@@ -1,0 +1,24 @@
+---
+interface Props {
+  /**
+   * E.g. `wl3cRB`.
+   */
+  shader_id: string;
+  img: string;
+  img_alt?: string;
+}
+
+const { shader_id, img, img_alt } = Astro.props as Props;
+
+const shader_url = `https://www.shadertoy.com/view/${shader_id}`;
+---
+<figure>
+  <a
+    href={shader_url}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <img src={img} alt={img_alt ?? "Shader Thumbnail"} style="width: 100%; max-width: 640px;" />
+  </a>
+  <figcaption><slot /><br /><a href={shader_url} target="_blank" rel="noopener noreferrer">View on ShaderToy</a></figcaption>
+</figure>
