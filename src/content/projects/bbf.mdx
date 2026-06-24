@@ -1,0 +1,28 @@
+---
+title: Bike & Body Fit
+description: Computer vision-based system to analyze bike fit and body posture while cycling.
+date: "2022-07"
+tags: [Computer Vision, C++, OpenCV, Machine Learning, Cycling, Machine Learning, Qt]
+featured: 2
+status: archive
+image: /projects/bbf/screenshot.png
+imageAlt: Bike & Body Fit applications
+---
+
+import { Hero } from '@luca/astro-ui/components'
+import { HeroActions, HeroButton } from '@luca/astro-ui/components/hero_actions';
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import screenshot from "../../../public/projects/bbf/screenshot.png";
+
+<Hero>
+  <Image class="hero__logo front-image" src={screenshot} alt="Bike & Body Fit app" />
+</Hero>
+
+This is a computer vision-based system to analyze bike fit and body posture while cycling and aid in improving performance.
+
+The system uses a camera to capture the cyclist's movements and applies computer vision techniques to extract key points of the body and bike. It then analyzes these points to data and plots on the cyclist's posture and bike fit.
+
+The system uses custom computer vision algorithms for marker detection and tracking as well as optical flows techniques from OpenCV. The main application uses Qt as the graphical user interface and runs on Windows and Mac. I also experimented with MediaPipe for a machine learning-based approach to detect key points but it proved too inaccurate for this application.
+
+At the time of write, the application is currently in use by [a physiologist](https://www.instagram.com/cycling_physiology_bikefitting/) in Italy.
