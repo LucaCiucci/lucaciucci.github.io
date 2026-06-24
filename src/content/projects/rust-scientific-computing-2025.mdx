@@ -1,0 +1,28 @@
+---
+title: My talk at the Rust Scientific Computing Workshop 2025
+description: Interactive slide archive for talk at the Rust Scientific Computing Workshop 2025
+date: "2025-06-06"
+tags: [Rust, Scientific Computing, Physics, Mathematics, Presentation, Typst]
+featured: 1
+status: archive
+image: /projects/rust-scientific-computing-2025/handout-svg/01.svg
+imageAlt: Slide 1 of the presentation.
+---
+import { SlideViewer } from '@luca/astro-ui/components';
+
+This archives the slides of my [talk](https://scientificcomputing.rs/2025/talks/ciucci.html) at the Rust Scientific Computing Workshop 2025[^rust-sci-comp].
+
+> Monte Carlo methods, particularly Markov chain Monte Carlo (MCMC), play a fundamental role in numerical simulations of quantum field theory (QFT), especially in lattice quantum chromodynamics (Lattice QCD). These simulations require high-performance computing (HPC) techniques due to their extreme computational complexity. However, traditional implementations often rely on legacy languages like C and Fortran, leading to challenges in extensibility, maintainability, safety, and performance optimization.
+>
+> In this talk, I will explore how Rust, with its modern idioms, strong concurrency model, and a still immature but growing numerical computing ecosystem, can be a compelling alternative for high-performance QFT simulations. I will discuss the advantages Rust offers over traditional approaches, the challenges of integrating it into existing scientific computing workflows, and its potential for Rust-based HPC in theoretical physics.
+
+Links:
+- [PDF](/projects/rust-scientific-computing-2025/final.pdf)
+- [PDF (handout)](/projects/rust-scientific-computing-2025/handout.pdf)
+- [Recording](https://youtu.be/2cMMe87zMBo)
+
+## Presentation
+
+<SlideViewer zero_pad={2} basePath="/projects/rust-scientific-computing-2025/handout-svg" count={18} title="Magnetic monopoles presentation" />
+
+[^rust-sci-comp]: https://scientificcomputing.rs/2025/
