@@ -1,42 +1,57 @@
 _defs:
   featured:
-    flagship: &flagship 1
-    strong: &strong 2
-    distinctive: &distinctive 3
-    very-low: &very-low 4
+    flagship-1: &flagship-1 1
+    flagship-2: &flagship-2 2
+    flagship-3: &flagship-3 3
+    strong-1: &strong-1 4
+    strong-2: &strong-2 5
+    distinctive-1: &distinctive-1 6
+    distinctive-2: &distinctive-2 7
+    distinctive-3: &distinctive-3 8
+    distinctive-4: &distinctive-4 9
+    supporting-1: &supporting-1 10
+    supporting-2: &supporting-2 11
+    supporting-3: &supporting-3 12
+    supporting-4: &supporting-4 13
+    supporting-5: &supporting-5 14
+    supporting-6: &supporting-6 15
+    supporting-7: &supporting-7 16
+    supporting-8: &supporting-8 17
+    supporting-9: &supporting-9 18
+    supporting-10: &supporting-10 19
 
 projects:
 - href: /projects/c-rusted-rs
-  featured: *flagship
+  featured: *flagship-1
 - title: Magnetic Monopoles
   href: /projects/bachelor-thesis
-  featured: *strong
+  featured: *strong-2
 - title: Other Instagram projects...
 - title: Other github projects...
 - href: /projects/colorful-soap-bubbles
-  featured: *very-low
+  featured: *supporting-6
 - href: /projects/n-body-sim
-  featured: *very-low
+  featured: *supporting-1
 - href: /projects/arago-spot
-  featured: *very-low
+  featured: *supporting-7
 - href: /projects/fractals-and-sparks
-  featured: *very-low
+  featured: *supporting-5
 - href: /projects/single-slit-diffraction
-  featured: *very-low
+  featured: *supporting-8
 - href: /projects/jacob-ladder
-  featured: *very-low
+  featured: *supporting-3
 - href: /projects/wimshurst-machine-photoset
-  featured: *very-low
+  featured: *supporting-4
 - href: /projects/cd-as-diffraction-grating
-  featured: *very-low
+  featured: *supporting-9
 - href: /projects/mercury-and-aluminum
-  featured: *very-low
+  featured: *supporting-10
 - href: /projects/black-hole-shader
-  featured: *very-low
+  featured: *distinctive-4
 - href: /projects/rust-scientific-computing-2025
-  featured: *flagship
+  featured: *flagship-2
 - href: /projects/bbf
-  featured: *strong
+  featured: *flagship-3
 - title: Wright fliers
 - title: High voltag
 - title: Mercury on Aluminum
@@ -57,7 +72,7 @@ projects:
 - title: Levitation
 - title: MPU6050 Tracking
   href: /projects/mpu6050-td
-  featured: *very-low
+  featured: *supporting-2
 - title: regui
 - title: OPN
 
@@ -68,24 +83,24 @@ projects:
 - title: Interval-arithmetic equation plotter
 - title: Pac-Man TCO
   href: /projects/pac-man-tco
-  featured: *distinctive
+  featured: *distinctive-3
 - title: Interferometer
 - title: Interference spot
 - title: N-body Simulation
 - title: CERN BL4S
 - title: Self Drawing Equation
   href: /projects/self-drawing-equation
-  featured: *distinctive
+  featured: *distinctive-1
 - title: Self Balancing Robot
 - title: System Monitor
   href: /projects/system-monitor
-  featured: *strong
+  featured: *strong-1
 
 
 
 - title: Nitrogen Laser
   href: /projects/nitrogen-laser
-  featured: *distinctive
+  featured: *distinctive-2
 - title: Bicycle Posture Analyzer
   date: TBD
   status: archive
