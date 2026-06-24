@@ -1,7 +1,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 type YamlProject = {
-  title: string;
+  title?: string;
   href?: string;
   description?: string;
   date?: string;
@@ -38,7 +38,7 @@ export async function mergeProjects(yamlProjects: YamlProject[]): Promise<Merged
         href: yamlEntry.href,
         date: colEntry.data.date,
         tags: colEntry.data.tags,
-        featured: colEntry.data.featured,
+        featured: yamlEntry.featured,
         status: colEntry.data.status,
         image: colEntry.data.image,
         imageAlt: colEntry.data.imageAlt,
