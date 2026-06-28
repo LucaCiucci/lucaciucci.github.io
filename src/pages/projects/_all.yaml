@@ -52,6 +52,8 @@ projects:
   featured: *flagship-2
 - href: /projects/bbf
   featured: *flagship-3
+- href: /projects/wiew
+  featured: *flagship-2
 - title: Wright fliers
 - title: High voltag
 - title: Mercury on Aluminum

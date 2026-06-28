@@ -9,7 +9,7 @@ export const collections = {
       description: z.string(),
       date: z.string().optional(),
       tags: z.array(z.string()).default([]),
-      status: z.enum(['complete', 'archive', 'external']).optional(),
+      status: z.enum(['complete', 'archive', 'external', 'active']).optional(),
       image: z.string().optional(),
       imageAlt: z.string().optional(),
     }),

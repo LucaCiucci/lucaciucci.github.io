@@ -4,3 +4,6 @@
 [submodule "deps/astro-ui"]
 	path = deps/astro-ui
 	url = https://github.com/LucaCiucci/astro-ui
+[submodule "deps/wiew"]
+	path = deps/wiew
+	url = https://github.com/LucaCiucci/wiew

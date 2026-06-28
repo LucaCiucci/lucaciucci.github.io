@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "make -C deps/CV",
+    "prebuild": "make -C deps/CV && (cd deps/wiew/crates/wiew-web && trunk build --release)",
     "build": "astro build",
     "postbuild": "pagefind --site dist --output-path dist/pagefind",
     "preview": "astro preview",

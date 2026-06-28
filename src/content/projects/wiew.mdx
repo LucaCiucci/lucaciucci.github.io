@@ -1,0 +1,28 @@
+---
+title: Wiew
+description: A user-friendly 3d rendering library
+date: "2026-06"
+tags: [Computer Graphics, Rust, WebAssembly, WebGPU, 3D Rendering]
+status: active
+image: /projects/wiew/screenshot.webp
+imageAlt: Wiew application
+---
+
+import { Hero } from '@luca/astro-ui/components'
+import { HeroActions, HeroButton } from '@luca/astro-ui/components/hero_actions';
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+
+<Hero>
+  <iframe
+    src="/projects/wiew/dist/index.html"
+    width="100%"
+    height="600px"
+    style={{ border: "none" }}
+    title="Wiew Demo"
+  />
+  <HeroActions>
+    <HeroButton href="https://github.com/LucaCiucci/wiew" newTab><Icon name='lucide:github' />GitHub</HeroButton>
+    <HeroButton href="https://docs.rs/wiew/latest/wiew/" role="primary" newTab><Icon name='lucide:book' />Documentation</HeroButton>
+  </HeroActions>
+</Hero>
