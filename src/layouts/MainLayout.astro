@@ -16,9 +16,13 @@ interface Props {
   top_notice?: { text: string; kind?: 'orange' };
   meta?: PageMeta;
   headings?: PageHeading[];
+  frontmatter?: Props;
 }
 
-const { title, show_page_nav, heading_depth, top_notice, meta = {}, headings } = Astro.props as Props;
+const { title, show_page_nav, heading_depth, top_notice, meta = {}, headings } = {
+  ...(Astro.props.frontmatter || {}),
+  ...Astro.props,
+};
 
 //meta.image = meta.image ?? '/og-image.png';
 meta.image = meta.image ?? '/img/universe_in_a_jar_v2.png';

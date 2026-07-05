@@ -18,9 +18,13 @@ interface Props {
   imageAlt?: string;
   meta?: PageMeta;
   headings?: PageHeading[];
+  frontmatter?: Props;
 }
 
-const { title, description, date, tags = [], image, imageAlt, meta = {}, headings } = Astro.props;
+const { title, description, date, tags = [], image, imageAlt, meta = {}, headings } = {
+  ...(Astro.props.frontmatter || {}),
+  ...Astro.props,
+};
 
 meta.description = meta.description ?? description;
 meta.date = meta.date ?? date;
