@@ -450,7 +450,7 @@ the analysis assumes that `a` points to an abstract place `*a`, and that `b` poi
   <Callout variant="important">
     In C there are some limited aliasing rules. For example for optimization reasons, the Type-Based Alias Analysis (TBAA) rules contains the following principle: "Two pointers of different types cannot alias each other, unless one of them is a character type."[^tbaa][^tbaa-stefansf].
 
-    This is a useful rule, but it is not enough to recover Rust-like guarantees. For example, if `a` and `b` have the same type, they could still alias each other, either directly or indirectly so this rule does not help at all in the general case and should not be relied on for a C-rusted specification or production-grade checker.
+    This is a useful rule, but it is not enough to recover Rust-like guarantees. For example, even if `a` and `b` have the different types, they could still alias the same memory indirectly so this rule does not help at all in the general case and should not be relied on for a C-rusted specification or production-grade checker.
   </Callout>
 </Callout>
 
