@@ -65,6 +65,10 @@ const canonical_url = new URL(Astro.url.pathname, 'https://lucaciucci.github.io'
   nav_items={navItems}
   social_links={socialLinks}
   sitemap="/sitemap-index.xml"
+  umami={{
+    server: 'umami.lucaciucci99.com',
+    website_id: 'ef76643a-2722-4843-8f76-c3f5e0e0538a'
+  }}
 >
   <slot />
 </Layout>
