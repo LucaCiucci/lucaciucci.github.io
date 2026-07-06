@@ -27,7 +27,7 @@ const processor = unified({
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://lucaciucci.github.io',
+  site: 'https://lucaciucci99.com',
   integrations: [mdx(), icon(), sitemap()],
   markdown: {
     processor,
