@@ -1,6 +1,7 @@
 ---
 import { type PageMeta } from "@luca/astro-ui/layouts";
-import Article from "./Article.astro";
+import Article from './Article.astro';
+import { Callout, Md } from '@luca/astro-ui/components';
 
 interface PageHeading {
   depth: number;
@@ -10,7 +11,8 @@ interface PageHeading {
 
 interface Props {
   title: string;
-  date?: string;
+  subtitle?: string;
+  date: string | Date;
   description: string;
   tags?: string[];
   image?: string;
@@ -20,26 +22,28 @@ interface Props {
   frontmatter?: Props;
 }
 
-const { title, description, date, tags, image, imageAlt, meta, headings } = {
+const { title, subtitle, date, description, tags, image, imageAlt, meta, headings } = {
   ...(Astro.props.frontmatter || {}),
   ...Astro.props,
 };
 
-const eyebrow = date ? `Project archive · ${date}` : 'Project archive';
+const dateStr = (date instanceof Date ? date.toISOString() : String(date)).split('T')[0];
+const eyebrow = `Blog post · ${dateStr}`;
 ---
 
 <Article
   title={title}
-  subtitle={description}
+  subtitle={subtitle}
   description={description}
   tags={tags}
   image={image}
   imageAlt={imageAlt}
-  backHref="/projects"
-  backLabel="← All projects"
+  backHref="/blog"
+  backLabel="← All posts"
   eyebrow={eyebrow}
   meta={meta}
   headings={headings}
 >
+  {description && <Callout variant="tldr"><Md text={description} /></Callout>}
   <slot />
 </Article>

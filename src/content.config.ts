@@ -15,4 +15,14 @@ export const collections = {
       imageAlt: z.string().optional(),
     }),
   }),
+  blog_posts: defineCollection({
+    //loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog_posts' }),
+    loader: glob({ pattern: '**/20*/**/[^_]*.{md,mdx}', base: './src/pages/blog' }),
+    schema: z.object({
+      title: z.string(),
+      subtitle: z.string().optional(),
+      description: z.string().optional(),
+      date: z.date().optional(),
+    }),
+  }),
 };
