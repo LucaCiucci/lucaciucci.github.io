@@ -1,0 +1,40 @@
+---
+import { Md } from '@luca/astro-ui/components';
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  description?: string;
+  date?: Date;
+  href: string;
+}
+
+const { title, subtitle, description, date, href } = Astro.props;
+const dateStr = date ? date.toISOString().split('T')[0] : '';
+---
+
+{
+  description
+    ? <li><details><summary>{dateStr ? `${dateStr}: ` : ''}<a href={href}><Md kind="inline" text={title || 'Untitled'} /></a>{subtitle && <span class="subtitle-inline"> — <Md kind="inline" text={subtitle} /></span>}</summary><Md text={description} /></details></li>
+    : <li>{dateStr ? `${dateStr}: ` : ''}<a href={href}><Md kind="inline" text={title || 'Untitled'} /></a>{subtitle && <span class="subtitle-inline"> — <Md kind="inline" text={subtitle} /></span>}</li>
+}
+
+<style>
+  .subtitle-inline {
+    color: var(--text-muted);
+  }
+
+  li {
+    list-style: none;
+  }
+
+  a {
+    color: var(--text);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--accent);
+  }
+</style>

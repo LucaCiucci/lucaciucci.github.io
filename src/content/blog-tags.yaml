@@ -1,0 +1,11 @@
+# Tag descriptions — shown on per-tag pages like /blog/tag/<tag>/
+# Tags discovered in blog posts are automatically included; add an entry
+# here if you want a description to appear on the tag page.
+
+tags:
+  architecture:
+    description: Posts about software architecture and design
+  rust:
+    description: Posts about the Rust programming language
+  structured-light:
+    description: Posts about structured light scanning

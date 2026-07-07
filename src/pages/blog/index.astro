@@ -1,0 +1,64 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+import { Code } from 'astro:components';
+import { Md } from '@luca/astro-ui/components';
+import PostListItem from '../../components/blog/PostListItem.astro';
+
+const all_posts = (await getCollection('blog_posts'))
+  .sort((a, b) => (b.data.date ?? new Date(0)).getTime() - (a.data.date ?? new Date(0)).getTime());
+
+const all_tags = [...new Set(all_posts.flatMap(p => p.data.tags))].sort();
+---
+
+<MainLayout title="Blog">
+  <h1>Posts</h1>
+
+  {all_posts.map(post => (
+    <PostListItem
+      title={post.data.title}
+      subtitle={post.data.subtitle}
+      description={post.data.description}
+      date={post.data.date}
+      href={`/blog/${post.id}`}
+    />
+  ))}
+
+  <h2>Tags</h2>
+
+  <ul class="tag-list">
+    {all_tags.map(tag => <li><a href={`/blog/tag/${tag}/`}>{tag}</a></li>)}
+  </ul>
+
+  {import.meta.env.DEV && <details>
+    <summary>All posts (JSON)</summary>
+    <Code code={JSON.stringify(all_posts, null, 2)} language="json" />
+  </details>}
+</MainLayout>
+
+<style>
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tag-list li {
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.22rem 0.58rem;
+    font-size: 0.72rem;
+    font-weight: 650;
+  }
+
+  .tag-list a {
+    color: var(--text-soft);
+    text-decoration: none;
+  }
+
+  .tag-list a:hover {
+    color: var(--accent);
+  }
+</style>

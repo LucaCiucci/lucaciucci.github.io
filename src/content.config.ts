@@ -23,6 +23,7 @@ export const collections = {
       subtitle: z.string().optional(),
       description: z.string().optional(),
       date: z.date().optional(),
+      tags: z.array(z.string()).default([]),
     }),
   }),
 };
