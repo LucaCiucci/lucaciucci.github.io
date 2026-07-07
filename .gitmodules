@@ -7,3 +7,6 @@
 [submodule "deps/wiew"]
 	path = deps/wiew
 	url = https://github.com/LucaCiucci/wiew
+[submodule "deps/e-light-shared-assets"]
+	path = deps/e-light-shared-assets
+	url = https://github.com/e-birb/shared-assets
