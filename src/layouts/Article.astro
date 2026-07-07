@@ -36,7 +36,12 @@ const { title, subtitle, description, tags = [], image, imageAlt, backHref, back
   ...Astro.props,
 };
 
-meta.description = meta.description ?? [subtitle, description].filter(Boolean).join('\n\n');
+meta.description = meta.description ?? (() => {
+  const parts = [subtitle, description].filter(Boolean);
+  // Avoid duplication when subtitle and description are the same (e.g. projects)
+  return parts.length > 1 && parts[0] === parts[1] ? parts[0] : parts.join('\n\n');
+})();
+meta.type = meta.type ?? 'article';
 meta.image = meta.image ?? image;
 meta.image_alt = meta.image_alt ?? imageAlt;
 ---
