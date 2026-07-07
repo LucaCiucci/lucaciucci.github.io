@@ -32,7 +32,7 @@ const all_tags = [...new Set(all_posts.flatMap(p => p.data.tags))].sort();
 
   {import.meta.env.DEV && <details>
     <summary>All posts (JSON)</summary>
-    <Code code={JSON.stringify(all_posts, null, 2)} language="json" />
+    <Code code={JSON.stringify(all_posts, null, 2)} lang="json" />
   </details>}
 </MainLayout>
 
