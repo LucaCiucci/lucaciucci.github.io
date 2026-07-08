@@ -24,6 +24,8 @@ export const collections = {
       description: z.string().optional(),
       date: z.date().optional(),
       tags: z.array(z.string()).default([]),
+      image: z.string().optional(),
+      imageAlt: z.string().optional(),
     }),
   }),
 };

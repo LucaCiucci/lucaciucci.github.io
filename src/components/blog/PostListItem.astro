@@ -7,17 +7,33 @@ interface Props {
   description?: string;
   date?: Date;
   href: string;
+  image?: string;
+  imageAlt?: string;
+  tags?: string[];
 }
 
-const { title, subtitle, description, date, href } = Astro.props;
+const { title, subtitle, description, date, href, image, imageAlt = '', tags = [] } = Astro.props;
 const dateStr = date ? date.toISOString().split('T')[0] : '';
 ---
 
-{
+<li class="details-box">
+    {image && <a href={href}><img src={image} alt={imageAlt} class="list-image" /></a>}
+    {dateStr ? <span class="muted">{dateStr}: </span> : ''}<a href={href}><Md kind="inline" text={title || 'Untitled'} /></a>
+  {
   description
-    ? <li><details><summary>{dateStr ? `${dateStr}: ` : ''}<a href={href}><Md kind="inline" text={title || 'Untitled'} /></a>{subtitle && <span class="subtitle-inline"> — <Md kind="inline" text={subtitle} /></span>}</summary><Md text={description} /></details></li>
-    : <li>{dateStr ? `${dateStr}: ` : ''}<a href={href}><Md kind="inline" text={title || 'Untitled'} /></a>{subtitle && <span class="subtitle-inline"> — <Md kind="inline" text={subtitle} /></span>}</li>
-}
+    ? <>
+        {subtitle && <details>
+          <summary class="styled"><span class="subtitle-inline"><Md kind="inline" text={subtitle} /></span></summary><Md text={description} />
+        </details>}
+      </>
+    : <>{subtitle && <span class="subtitle-inline"> — <Md kind="inline" text={subtitle} /></span>}</>
+  }
+  {tags.length > 0 && (
+    <ul class="tag-list">
+      {tags.map(tag => <li><a href={`/blog/tag/${tag}/`}>{tag}</a></li>)}
+    </ul>
+  )}
+</li>
 
 <style>
   .subtitle-inline {
@@ -26,6 +42,7 @@ const dateStr = date ? date.toISOString().split('T')[0] : '';
 
   li {
     list-style: none;
+    overflow: hidden;
   }
 
   a {
@@ -36,5 +53,47 @@ const dateStr = date ? date.toISOString().split('T')[0] : '';
 
   a:hover {
     color: var(--accent);
+  }
+
+  details {
+    border: none;
+    margin: 0;
+    padding: 0;
+  }
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0.3rem 0 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .tag-list li {
+    overflow: visible;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.22rem 0.58rem;
+    font-size: 0.72rem;
+    font-weight: 650;
+  }
+
+  .tag-list li a {
+    color: var(--text-soft);
+    font-weight: 650;
+    text-decoration: none;
+  }
+
+  .tag-list li a:hover {
+    color: var(--accent);
+  }
+
+  .list-image {
+    float: right;
+    width: 7rem;
+    height: 5rem;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--border);
   }
 </style>
