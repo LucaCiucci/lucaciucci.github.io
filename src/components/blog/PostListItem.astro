@@ -1,5 +1,6 @@
 ---
 import { Md } from '@luca/astro-ui/components';
+import TagPill from '../TagPill.astro';
 
 interface Props {
   title: string;
@@ -30,7 +31,7 @@ const dateStr = date ? date.toISOString().split('T')[0] : '';
   }
   {tags.length > 0 && (
     <ul class="tag-list">
-      {tags.map(tag => <li><a href={`/blog/tag/${tag}/`}>{tag}</a></li>)}
+      {tags.map(t => <li><TagPill tag={t} href={`/blog/tag/${t}/`} /></li>)}
     </ul>
   )}
 </li>
@@ -71,21 +72,6 @@ const dateStr = date ? date.toISOString().split('T')[0] : '';
 
   .tag-list li {
     overflow: visible;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 0.22rem 0.58rem;
-    font-size: 0.72rem;
-    font-weight: 650;
-  }
-
-  .tag-list li a {
-    color: var(--text-soft);
-    font-weight: 650;
-    text-decoration: none;
-  }
-
-  .tag-list li a:hover {
-    color: var(--accent);
   }
 
   .list-image {

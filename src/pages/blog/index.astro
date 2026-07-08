@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import { Code } from 'astro:components';
 import { Md } from '@luca/astro-ui/components';
 import PostListItem from '../../components/blog/PostListItem.astro';
+import TagPill from '../../components/TagPill.astro';
 
 const all_posts = (await getCollection('blog_posts'))
   .sort((a, b) => (b.data.date ?? new Date(0)).getTime() - (a.data.date ?? new Date(0)).getTime());
@@ -30,7 +31,7 @@ const all_tags = [...new Set(all_posts.flatMap(p => p.data.tags))].sort();
   <h2>Tags</h2>
 
   <ul class="tag-list">
-    {all_tags.map(tag => <li><a href={`/blog/tag/${tag}/`}>{tag}</a></li>)}
+    {all_tags.map(t => <li><TagPill tag={t} href={`/blog/tag/${t}/`} /></li>)}
   </ul>
 
   {import.meta.env.DEV && <details>
@@ -46,22 +47,5 @@ const all_tags = [...new Set(all_posts.flatMap(p => p.data.tags))].sort();
     gap: 0.4rem;
     padding: 0;
     list-style: none;
-  }
-
-  .tag-list li {
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 0.22rem 0.58rem;
-    font-size: 0.72rem;
-    font-weight: 650;
-  }
-
-  .tag-list a {
-    color: var(--text-soft);
-    text-decoration: none;
-  }
-
-  .tag-list a:hover {
-    color: var(--accent);
   }
 </style>

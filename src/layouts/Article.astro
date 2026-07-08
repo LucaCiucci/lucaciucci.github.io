@@ -2,6 +2,7 @@
 import { type PageMeta } from "@luca/astro-ui/layouts";
 import { Md } from "@luca/astro-ui/components";
 import MainLayout from "./MainLayout.astro";
+import TagPill from "../components/TagPill.astro";
 
 interface PageHeading {
   depth: number;
@@ -59,7 +60,7 @@ meta.image_alt = meta.image_alt ?? imageAlt;
       {eyebrow && <p class="eyebrow">{eyebrow}</p>}
       <h1><Md kind="inline" text={title || '<no title>'} /></h1>
       {subtitle && <p class="subtitle"><Md kind="inline" text={subtitle} /></p>}
-      {tags.length > 0 && <ul>{tags.map(t => tagBaseHref ? <li><a href={`${tagBaseHref}${t}/`}>{t}</a></li> : <li>{t}</li>)}</ul>}
+      {tags.length > 0 && <ul>{tags.map(t => <li>{tagBaseHref ? <TagPill tag={t} href={`${tagBaseHref}${t}/`} /> : <TagPill tag={t} />}</li>)}</ul>}
     </header>
     <div class="content"><slot /></div>
   </article>
@@ -100,24 +101,6 @@ meta.image_alt = meta.image_alt ?? imageAlt;
     padding: 0;
     gap: 0.4rem;
     list-style: none;
-  }
-
-  li {
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 0.22rem 0.58rem;
-    color: var(--text-soft);
-    font-size: 0.72rem;
-    font-weight: 650;
-  }
-
-  li a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  li a:hover {
-    color: var(--accent);
   }
 
   .content {
