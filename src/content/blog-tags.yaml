@@ -5,9 +5,9 @@
 tags:
   devlog:
     description: Posts about development logs and progress updates
-  architecture:
+  Architecture:
     description: Posts about software architecture and design
-  rust:
+  Rust:
     description: Posts about the Rust programming language
   SLS:
     description: Posts about structured light scanning
