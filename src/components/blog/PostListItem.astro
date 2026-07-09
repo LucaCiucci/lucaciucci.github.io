@@ -27,7 +27,7 @@ const dateStr = date ? date.toISOString().split('T')[0] : '';
           <summary class="styled"><span class="subtitle-inline"><Md kind="inline" text={subtitle} /></span></summary><Md text={description} />
         </details>}
       </>
-    : <>{subtitle && <span class="subtitle-inline"> — <Md kind="inline" text={subtitle} /></span>}</>
+    : <>{subtitle && <div class="subtitle-inline"><Md kind="inline" text={subtitle} /></div>}</>
   }
   {tags.length > 0 && (
     <ul class="tag-list">
