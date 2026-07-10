@@ -1,0 +1,212 @@
+---
+layout: $layouts/BlogPage.astro
+title: "Hooks, extension traits, and tiny contexts"
+date: 2026-07-10
+subtitle: A small Rust pattern I reached for while building c-rusted-rs and a toy reactive framework.
+image: /projects/c-rusted-rs/perfetto-ui-2.png
+imageAlt: >-
+  Profiling screenshot from the `c-rusted-rs` project, showing how the dependency structure emerges cleanly even from the profiling data.
+description: |
+  In this post, I describe a small Rust pattern I reached for while building `c-rusted-rs` and a toy reactive framework. It is based on a small context object that is extended through capability-specific extension traits.
+tags:
+- Rust
+- Architecture
+- Static Analysis
+- Programming Languages
+---
+
+While working on [`c-rusted-rs`](/projects/c-rusted-rs/), I ended up with a small pattern that I liked more than I expected.
+
+The project needed an analysis context: something passed around while running checkers and dataflow analyses. At first, this sounds like the kind of object that can easily become a giant bag of unrelated methods:
+```rust
+cx.ast();
+cx.report(...);
+cx.points_to_analysis(...);
+cx.liveness_analysis(...);
+cx.borrow_state(...);
+cx.custom_properties(...);
+```
+
+That was exactly what I wanted to avoid.
+
+Instead, I tried to keep the core context intentionally boring. It provided only a few basic facilities:
+- access to the AST;
+- a way to emit reports;
+- a storage area for arbitrary analysis data.
+
+In other words, it was basically a tiny typemap-backed context with a few project-specific services attached to it.
+
+Everything else could be added externally.
+
+## The first name: _hooks_
+
+At the time, I called the extra functionality "_hooks_".
+
+The most useful one was `UseCached`, which allowed a checker to request the result of another analysis:
+
+```rust
+let pto = cx.use_cached::<PtoAnalysis>(ntt)?;
+```
+
+The idea was simple: if several checkers need _points-to_ information, they should not all recompute it manually or receive it through a long chain of function parameters. They should be able to ask the context for it.
+
+The context then takes care of running the analysis at most once for the relevant entity and reusing the cached result afterwards.
+
+This was especially useful because the project quickly grew from local syntactic checks to analyses that depended on other analyses. Ownership-like checks, borrowing checks, and custom state-property checks all needed some shared infrastructure: CFGs, points-to information, and cached dataflow results.
+
+Without some kind of context-level _cache_, that dependency structure would have become annoying very quickly.
+
+## But they were not really hooks
+
+In hindsight, "_hooks_" was not a great name.
+
+I used it because I had been playing with Yew-like and React-like ideas in a toy reactive framework. There, names like `use_state`, `use_init`, or `use_effect` make sense: they are part of a framework-managed lifecycle.
+
+But in `c-rusted-rs`, there was no UI lifecycle. There was no render loop. There was no special ordering rule enforced by a framework.
+
+`UseCached` was not a hook in the React sense. It was just a trait that added a method to the context.
+
+That makes the Rust name much more ordinary "_extension trait_".
+
+Something like [this](https://github.com/LucaCiucci/c-rusted-rs/blob/6d10c03022d165f7d3b6c3506203b6ba79283b2e/crates/analyzer/src/analysis_context/hooks/cached.rs#L11):
+
+```rust
+trait UseCached {
+  fn use_cached<T: Cacheable>(&mut self, ntt: &Entity) -> AnalysisResult<Rc<T>>;
+}
+
+impl UseCached for AnalysisContext {
+  fn use_cached<T: Cacheable>(&mut self, ntt: &Entity) -> AnalysisResult<Rc<T>> {
+    // Look into the typemap.
+    // If the result is missing, compute it.
+    // Store it.
+    // Return it.
+  }
+}
+```
+
+The real code was more specific, but the shape is the important part.
+
+The context does not need to know about every high-level operation directly. Instead, capability-specific traits extend it with methods.
+
+In the repository there are several usage examples, like the case of the _custom properties_ checker that I discussed in the [`c-rusted-rs` article](/projects/c-rusted-rs#a-simple-but-non-trivial-checker-custom-properties). In [that case](https://github.com/LucaCiucci/c-rusted-rs/blob/6d10c03022d165f7d3b6c3506203b6ba79283b2e/crates/analyzer/src/checker/custom_properties.rs#L164-L165), the dependencies were very explicit:
+```rust
+let actions_analysis = cx.use_cached::<ActionsAnalysis>(ntt)?;
+let points_to_analysis = cx.use_cached::<PtoAnalysis>(ntt)?;
+```
+As a bonus, the same structure was easy to read even when [profiling](/projects/c-rusted-rs#profiling) the analysis pipeline.
+
+<figure>
+  ![Perfetto UI screenshot](/projects/c-rusted-rs/perfetto-ui-2.png)
+  <figcaption>Figure reproduced from the [profiling section](/projects/c-rusted-rs#profiling), showing how the dependency structure emerges cleanly even from the profiling data.</figcaption>
+</figure>
+
+## Small core, opt-in capabilities
+
+The pattern can be summarized as:
+
+> Keep the context small, then extend it through capability-specific traits.
+
+The core context owns the few things that are truly fundamental. In my case, that meant AST access, diagnostics, and typed storage.
+
+Then higher-level APIs can be layered on top:
+
+```rust
+cx.use_cached::<PtoAnalysis>(ntt)?;
+cx.push_report(report);
+cx.some_other_capability(...);
+```
+
+The nice part is that the method-call syntax still feels natural. A checker says:
+
+```rust
+let pto = cx.use_cached::<PtoAnalysis>(ntt)?;
+```
+
+instead of receiving points-to information as an explicit parameter from some outer orchestration layer. If another checker needs the same dependency, it asks for the same thing and gets the cached result.
+
+That kept the dependency structure local. The checker code itself showed which analysis results it needed.
+
+From the caller's point of view, `use_cached` looks like a normal context method. From the implementation's point of view, it is not part of the context's inherent API. This is a very Rust-friendly compromise: some of the ergonomics of a large framework object, filtered by what the caller imports, without forcing the core context to directly define everything.
+
+## This is not a new pattern
+
+There is nothing novel here.
+
+Rust uses extension traits all over the place. For example, crates often add methods to existing types through traits that the user imports:
+
+```rust
+use itertools::Itertools;
+
+let unique_items = items.iter().unique();
+```
+
+or:
+
+```rust
+use futures::StreamExt;
+
+stream.next().await;
+```
+
+The same basic mechanism can be used for project-specific contexts.
+
+In other languages, similar ideas appear as extension methods, mixins, or capability-style interfaces. The details change, but the motivation is familiar: you have a small object, and you want to add domain-specific operations without putting all of them directly into the object's original definition.
+
+In Rust, extension traits are the natural tool for that.
+
+## The typemap side
+
+There is another half of the pattern: the context storage.
+
+In `c-rusted-rs`, the context could store arbitrary typed data. That makes it close to a typemap, or to a small dependency cache.
+
+Analyses can produce results with different types, and the context can cache them without needing a manually maintained field for each one.
+
+Very roughly:
+
+```rust
+struct AnalysisContext {
+  diagnostics: Vec<Report>,
+  storage: TypeMap,
+  // -- snip --
+}
+```
+
+Then `UseCached` can use that storage to memoize analysis results. This is the part that makes the extension trait useful in practice: the trait provides the API, while the context provides the shared place where the computed values live.
+
+So the full pattern is not just "extension traits". It is closer to:
+
+> a typemap-backed context extended through capability-specific extension traits.
+
+That sounds more complicated than the idea really is, but it describes the shape quite well.
+
+## Caveats
+
+This pattern is useful, but it can also become too magical.
+
+The first risk is hidden dependencies. If every checker can ask the context for anything, it may become less obvious what the whole checker pipeline actually needs.
+
+The second risk is that the typemap can become an unstructured global state container. Once arbitrary data can be stored in a context, discipline matters. Not every piece of data deserves to live there.
+
+The third risk is import friction. Since extension methods come from traits, the trait must be in scope. This is normal Rust behavior, but it can be slightly confusing if the project has many small extension traits.
+
+So I would not use this everywhere. For simple code, explicit parameters are better. For complex analysis infrastructure, however, the pattern felt like a good tradeoff.
+
+## Where I would use it again
+
+I would reach for this pattern when:
+- there is a central context object;
+- the true core of the context is small;
+- different subsystems need methods that can be grouped into meaningful capabilities;
+- some of the data should be computed lazily and cached.
+
+Static-analysis infrastructure is a good fit. Compiler-like tools are a good fit. Some plugin systems might also be a good fit.
+
+For a UI framework, I would probably keep the word "hooks" if there is a real lifecycle behind them.
+
+For the more general Rust pattern, though, I would now call them what they are:
+
+> **context extension traits**.
+
+That is less catchy than "hooks", but much more accurate.
