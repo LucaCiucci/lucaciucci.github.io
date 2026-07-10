@@ -2,12 +2,14 @@
 layout: $layouts/BlogPage.astro
 title: "Hooks, extension traits, and tiny contexts"
 date: 2026-07-10
-subtitle: A small Rust pattern I reached for while building c-rusted-rs and a toy reactive framework.
+subtitle: A Rust pattern for keeping analysis contexts small without giving up convenient method calls.
 image: /projects/c-rusted-rs/perfetto-ui-2.png
 imageAlt: >-
-  Profiling screenshot from the `c-rusted-rs` project, showing how the dependency structure emerges cleanly even from the profiling data.
+  Perfetto profiling screenshot from the `c-rusted-rs` analyzer, showing nested analysis work in a trace view.
 description: |
-  In this post, I describe a small Rust pattern I reached for while building `c-rusted-rs` and a toy reactive framework. It is based on a small context object that is extended through capability-specific extension traits.
+  While building `c-rusted-rs`, I found myself calling some context helpers "hooks". In hindsight, they were really extension traits layered over a tiny typemap-backed analysis context.
+
+  The pattern is simple: keep the core context boring, then add opt-in capabilities such as cached analyses through trait methods. It is not novel, but it made the checker dependencies local, readable, and easier to compose.
 tags:
 - Rust
 - Architecture
