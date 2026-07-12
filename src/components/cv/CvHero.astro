@@ -51,6 +51,7 @@ const formatAddress = (address: Address) => {
   <DelaunayBackground class="hero-pattern" density={68} animated />
 
   <div class="copy">
+    <img class="hero-portrait" src={portrait} alt={`Portrait of ${name}`} />
     <p class="kicker">Curriculum vitae</p>
     <p class="name" id="cv-name">{name}</p>
     <p class="role">{role}</p>
@@ -66,8 +67,6 @@ const formatAddress = (address: Address) => {
       {pdf && <a class="action" href={pdf} download>Download PDF ↓</a>}
     </div>
   </div>
-
-  <img class="portrait" src={portrait} alt={`Portrait of ${name}`} />
 
   <div class="contact-strip">
     <div>
@@ -120,11 +119,10 @@ const formatAddress = (address: Address) => {
       radial-gradient(circle at 88% 15%, var(--active-accent), transparent 13rem),
       var(--cv-surface);
     box-shadow: var(--shadow-card);
-    grid-template-columns: minmax(0, 1fr) 142px;
   }
 
   .copy,
-  .portrait,
+  .hero-portrait,
   .contact-strip {
     position: relative;
     z-index: 1;
@@ -137,6 +135,12 @@ const formatAddress = (address: Address) => {
   .copy {
     align-self: center;
     padding: 1.6rem 1.8rem;
+  }
+
+  .copy::after {
+    display: block;
+    clear: both;
+    content: '';
   }
 
   .kicker {
@@ -229,12 +233,19 @@ const formatAddress = (address: Address) => {
     color: color-mix(in srgb, var(--accent) 15%, black);
   }
 
-  .portrait {
-    width: 100%;
-    height: 100%;
-    min-height: 218px;
-    border-left: 1px solid var(--border-strong);
+  .hero-portrait {
+    float: right;
+    width: clamp(5.25rem, 16vw, 9rem);
+    max-width: 9rem;
+    height: clamp(6.3rem, 19.2vw, 10.8rem);
+    max-height: 10.8rem;
+    aspect-ratio: 5 / 6;
+    margin: 0 0 1rem clamp(1rem, 3vw, 2rem);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
     object-fit: cover;
+    object-position: center 20%;
+    box-shadow: var(--shadow-card);
   }
 
   .contact-strip {
@@ -313,45 +324,19 @@ const formatAddress = (address: Address) => {
   }
 
   @media (max-width: 760px) {
-    .hero {
-      position: relative;
-      grid-template-columns: 1fr;
-    }
-
     .copy {
       padding: 1.25rem;
-      padding-right: 5.8rem;
     }
 
     .name {
       font-size: clamp(2.1rem, 10vw, 2.65rem);
     }
 
-    .role {
-      max-width: 15rem;
-      font-size: 0.88rem;
-    }
+    .role { font-size: 0.88rem; }
 
     .summary {
-      width: calc(100% + 4.55rem);
       margin-top: 0.7rem;
       font-size: 0.82rem;
-    }
-
-    .actions {
-      width: calc(100% + 4.55rem);
-    }
-
-    .portrait {
-      position: absolute;
-      top: 1.15rem;
-      right: 1.15rem;
-      width: 64px;
-      height: 76px;
-      min-height: 0;
-      border: 1px solid var(--border-strong);
-      border-radius: 8px;
-      object-position: center 20%;
     }
 
     .contact-strip {
