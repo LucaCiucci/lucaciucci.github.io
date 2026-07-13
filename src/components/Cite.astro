@@ -71,6 +71,32 @@ function formatUrl(url?: string | UrlField): string {
   return url.value ?? "";
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function formatUrlLink(url?: string | UrlField): string {
+  const value = formatUrl(url);
+  if (!value) return "";
+
+  try {
+    const { protocol } = new URL(value);
+    if (protocol !== "http:" && protocol !== "https:") {
+      return escapeHtml(value);
+    }
+  } catch {
+    return escapeHtml(value);
+  }
+
+  const escaped = escapeHtml(value);
+  return `<a href="${escaped}" target="_blank" rel="noopener noreferrer">${escaped}</a>`;
+}
+
 function formatDate(date?: string): string {
   if (!date) return "";
   const parts = date.split("-");
@@ -114,7 +140,7 @@ function formatResult(): string {
   const title = entry.title ? `"${entry.title}"` : "";
   const parent = formatParent(entry.parent);
   const date = formatDate(entry.date);
-  const url = formatUrl(entry.url);
+  const url = formatUrlLink(entry.url);
   const note = entry.note ? ` (${entry.note})` : "";
 
   switch (entry.type.toLowerCase()) {
