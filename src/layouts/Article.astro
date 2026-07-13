@@ -125,8 +125,10 @@ meta.image_alt = meta.image_alt ?? imageAlt;
     border-radius: 12px;
   }
 
-  .content :global(iframe) {
+  .content :global(iframe),
+  .content :global(video) {
     width: 100%;
+    max-width: 100%;
     border: 1px solid var(--border);
     border-radius: 12px;
     background: var(--background-raised);

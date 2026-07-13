@@ -1,0 +1,164 @@
+---
+interface Person {
+  givenName?: string;
+  name?: string;
+  prefix?: string;
+  suffix?: string;
+  alias?: string;
+}
+
+interface UrlField {
+  value?: string;
+  date?: string;
+}
+
+interface PublisherObj {
+  name: string;
+  location?: string;
+}
+
+interface ParentEntry {
+  type?: string;
+  title?: string;
+  volume?: string | number;
+  issue?: string | number;
+  publisher?: string | PublisherObj;
+}
+
+interface BibliographyEntry {
+  type: string;
+  title?: string;
+  author?: string | string[] | Person[];
+  date?: string;
+  url?: string | UrlField;
+  note?: string;
+  "serial-number"?: Record<string, string>;
+  publisher?: string | { name: string; location?: string };
+  parent?: ParentEntry | ParentEntry[];
+  page?: string | number;
+  pageRange?: string;
+  pageTotal?: number;
+  [key: string]: unknown;
+}
+
+export interface Props {
+  bibliography: Record<string, BibliographyEntry>;
+  id: string;
+}
+
+const { bibliography, id } = Astro.props as Props;
+const entry = bibliography[id];
+
+if (!entry) {
+  throw new Error(`Citation key "${id}" not found in bibliography`);
+}
+
+function formatAuthors(author?: string | string[] | Person[]): string {
+  if (!author) return "";
+  const authors = Array.isArray(author) ? author : [author];
+  return authors
+    .map((a) => {
+      if (typeof a === "string") return a;
+      const given = a.givenName ? ` ${a.givenName}` : "";
+      return `${a.name}${given}`;
+    })
+    .join(", ");
+}
+
+function formatUrl(url?: string | UrlField): string {
+  if (!url) return "";
+  if (typeof url === "string") return url;
+  return url.value ?? "";
+}
+
+function formatDate(date?: string): string {
+  if (!date) return "";
+  const parts = date.split("-");
+  const months = [
+    "Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.",
+    "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec.",
+  ];
+  if (parts.length === 3) {
+    const y = parts[0];
+    const m = parseInt(parts[1], 10);
+    const d = parseInt(parts[2], 10);
+    return `${months[m - 1]} ${d}, ${y}`;
+  }
+  if (parts.length === 2) {
+    const y = parts[0];
+    const m = parseInt(parts[1], 10);
+    return `${months[m - 1]} ${y}`;
+  }
+  return date;
+}
+
+function formatParent(
+  parent: ParentEntry | ParentEntry[] | undefined,
+): string {
+  if (!parent) return "";
+  const p = Array.isArray(parent) ? parent[0] : parent;
+  const parts: string[] = [];
+  if (p.title) parts.push(`*${p.title}*`);
+  if (p.volume) parts.push(`vol. ${p.volume}`);
+  if (p.issue) parts.push(`no. ${p.issue}`);
+  if (p.publisher) {
+    const pub =
+      typeof p.publisher === "string" ? p.publisher : p.publisher.name;
+    if (pub) parts.push(pub);
+  }
+  return parts.length > 0 ? `. In: ${parts.join(", ")}` : "";
+}
+
+function formatResult(): string {
+  const authors = formatAuthors(entry.author);
+  const title = entry.title ? `"${entry.title}"` : "";
+  const parent = formatParent(entry.parent);
+  const date = formatDate(entry.date);
+  const url = formatUrl(entry.url);
+  const note = entry.note ? ` (${entry.note})` : "";
+
+  switch (entry.type.toLowerCase()) {
+    case "article": {
+      let s = authors;
+      if (title) s += title.length > 0 && s.length > 0 ? `. ${title}` : title;
+      s += parent;
+      if (date) s += `. ${date}`;
+      if (url) s += `. ${url}`;
+      return s;
+    }
+    case "web": {
+      let s = authors;
+      if (title) s += title.length > 0 && s.length > 0 ? `. ${title}` : title;
+      if (url) s += `. ${url}`;
+      if (date) s += `. Accessed ${date}`;
+      s += note;
+      return s;
+    }
+    case "book": {
+      let s = authors;
+      if (title) s += title.length > 0 && s.length > 0 ? `. *${entry.title}*` : `*${entry.title}*`;
+      const pub =
+        typeof entry.publisher === "string"
+          ? entry.publisher
+          : entry.publisher?.name;
+      if (pub) s += `. ${pub}`;
+      if (date) s += `. ${date}`;
+      return s;
+    }
+    case "video": {
+      let s = title;
+      if (url) s += `. ${url}`;
+      if (date) s += `. ${date}`;
+      return s;
+    }
+    default: {
+      let s = authors;
+      if (title) s += title.length > 0 && s.length > 0 ? `. ${title}` : title;
+      if (date) s += `. ${date}`;
+      if (url) s += `. ${url}`;
+      return s;
+    }
+  }
+}
+---
+<Fragment set:html={formatResult()} />

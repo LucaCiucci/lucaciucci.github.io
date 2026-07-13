@@ -1,0 +1,101 @@
+vdu:
+  type: Web
+  title: "VDU Posture Monitor"
+  author: ["Ciucci, Luca", "Iena, Riccardo", "Iena, Alessandro"]
+  url:
+    value: https://bbf-project.github.io/vdu-posture-monitor/
+    date: "2023-04-04"
+
+articolo-mediapipe-young:
+  type: Article
+  title: "Human Pose Estimation Using MediaPipe Pose and Optimization Method Based on a Humanoid Model"
+  author: ["Kim, Jong-Wook", "Choi, Jin-Young", "Ha, Eun-Ju", "Choi, Jae-Ho"]
+  date: "2023-02"
+  serial-number:
+    doi: "10.3390/app13042700"
+  parent:
+    type: Periodical
+    title: Applied Sciences
+    volume: 13
+    issue: 4
+
+wit-sensor:
+  type: Web
+  title: "Tilt Angle Sensor (IMU) — WitMotion Shenzhen Co., Ltd"
+  author: ["Wit Motion"]
+  url:
+    value: https://www.wit-motion.com/ahrs.html
+    date: "2023-04-04"
+
+wit-datasheet:
+  type: Web
+  title: "Bluetooth AHRS IMU sensor | BWT901"
+  note: Datasheet
+  author: ["Wit Motion"]
+  url:
+    value: https://drive.google.com/file/d/1LuiTIqTvfK57TcUEyncxxqBCqE-MFrhR/view
+    date: "2023-04-04"
+
+mediapipe-pose-guide:
+  type: Web
+  title: "Pose landmark detection guide | MediaPipe | Google for Developers"
+  author: ["Google Inc."]
+  url:
+    value: https://developers.google.com/mediapipe/solutions/vision/pose_landmarker
+    date: "2023-04-04"
+
+mpu-datasheet:
+  type: Web
+  title: "MPU-9250 Product Specification Revision 1.1"
+  note: Datasheet
+  author: ["InvenSense"]
+  url:
+    value: https://invensense.tdk.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf
+    date: "2023-04-04"
+
+opencv-optical-flow:
+  type: Web
+  title: "OpenCV: Optical Flow"
+  url:
+    value: https://docs.opencv.org/4.9.0/d4/dee/tutorial_optical_flow.html
+    date: "2023-04-15"
+
+scapula-animation:
+  type: Video
+  title: "Scapular Force Couple — Muscle collaboration in the shoulder"
+  url:
+    value: https://www.youtube.com/watch?v=IN2-lqX_mFc
+    date: "2023-04-15"
+
+ISO-11226:
+  type: Book
+  title: "UNI ISO 11226: Valutazione delle posture statiche di lavoro"
+  author: ["ISO"]
+  date: "2019"
+  publisher: "UNI"
+
+ISO-9355-2:
+  type: Book
+  title: "ISO 9355-2: Ergonomic requirements for the design of displays and control actuators"
+  author: ["ISO"]
+  date: "1999"
+  publisher: "ISO"
+
+articolo-eurostat:
+  type: Article
+  title: "Salute e sicurezza sul lavoro in Italia"
+  author: ["Istituto Nazionale di Statistica"]
+  date: "2021-11-29"
+  parent:
+    type: Periodical
+    title: Eurostat
+
+WHO:
+  type: Web
+  title: "World Health Organization (WHO)"
+  url: https://www.who.int/
+
+IASP:
+  type: Web
+  title: "International Association for the Study of Pain (IASP)"
+  url: https://www.iasp-pain.org/

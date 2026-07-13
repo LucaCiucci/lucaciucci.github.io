@@ -1,0 +1,295 @@
+---
+title: Error Analysis and Validation of Posture Metrics in a Novel AI-assisted Posture Monitor Software
+description: |
+  The VDU Posture Monitor VDU software, currently under development, utilizes the webcam of a desktop computer to analyze the posture of individuals working at a video display unit. By employing a pre-trained neural model, the software evaluates various posture metrics and alerts users when their posture deviates from the optimal position. This paper presents a formal analysis of the errors associated with certain metric estimates, aiming to validate the accuracy of these fundamental values.
+date: "2024-08"
+tags: [Computer Vision, OpenCV, Optical Flow, Rust, Python, Machine Learning]
+status: archive
+image: /projects/vdu-validation/stereo-calibration-3d.png
+imageAlt: 3D view of the stereo calibration procedure
+---
+import { Callout } from "@luca/astro-ui/components"
+import Cite from "../../components/Cite.astro"
+import refs from "./vdu-validation.ref.yaml"
+
+export const VDUshort = <i>VDU posture monitor</i>
+export const VDU = <>{VDUshort}</> // TODO cite
+
+<Callout variant="info">
+  This page reproduces a (unfortunately) unpublished work. The experiments and the content were produced together with Riccardo Iena[^riccardo-iena] and Alessandro Iena[^alessandro-iena]. Special thanks to Prof. Francesco Pegreffi[^francesco-pegreffi] for recommending,supporting this work and his valuable feedback.
+
+  So this page simply reproduces the content of the drafted paper.
+</Callout>
+
+[^riccardo-iena]: https://www.instagram.com/cycling_physiology_bikefitting/
+[^alessandro-iena]: https://aleiena.it/
+[^francesco-pegreffi]: https://www.pegreffi.it/
+
+The impact of prolonged seated work on health and well-being has become a significant concern, particularly in relation to postural alterations and musculoskeletal disorders. Many workers are compelled to maintain non-physiological positions due to insufficient ergonomic support, leading to long-term negative health consequences. While preventive programs and postural education initiatives have been introduced in various workplaces, the high costs of ergonomic aids often prevent widespread implementation [^articolo-eurostat].
+
+This paper focuses on validating the measurements provided by the VDU Posture Monitor software, which aims to mitigate these issues by using webcam-based analysis to monitor and correct posture in real-time. By ensuring the accuracy of the software's metrics, we aim to provide a reliable tool that can be widely adopted to promote better ergonomic practices and prevent musculoskeletal disorders [^WHO].
+
+# Goal
+
+The primary goal of this study is to validate the accuracy of the posture metrics provided by the VDU Posture Monitor software. By conducting a formal analysis of the errors in these metrics, we seek to confirm the reliability of the software in detecting and correcting incorrect postures.
+
+This validation process is crucial for establishing the software as a practical and effective tool for real-time posture monitoring and correction. The long-term objective is to integrate this validated software into workplace environments, providing an accessible and non-invasive solution to improve ergonomic conditions and reduce the incidence of posture-related musculoskeletal disorders.
+
+# Materials and methods
+
+To determine the sample size, a power analysis was conducted to ensure the reliability of statistical testing. A representative sample was established, and 5 subjects were recruited, positioned in front of their monitors during normal working hours. The exclusion criteria included prior fractures, scoliosis, deformities, contractures, limb length discrepancies, presence of pain, lumbar-sacral issues, herniated discs, osteoarthritis, previous surgeries, ischial support problems, and prostate issues.
+For this study, we utilized our software, "VDU Posture Monitor," developed by Luca Ciucci, Riccardo Iena, and Alessandro Iena, and registered with SIAE under progressive number D000020440, registration number D000019326. The software is adaptive and intelligent, based on markerless technology and machine learning using the Mediapipe library [^mediapipe-pose-guide]. It monitors the posture of a subject using a video display terminal. The software uses the computer's front camera to recognize the subject and monitor their posture at regular intervals during a computer work session. It operates in the background, monitoring the subject's posture and alerting them if it is incorrect and potentially harmful to their health.
+
+The software is capable of computing several metrics, whose values are geometrically inferred from the video frames elaborated by the MediaPipe Pose [^articolo-mediapipe-young] which provides a set of 33 keypoints and a segmentation mask. The software only uses a subset of these keypoints, i.e. the shoulder and above points to compute the parameters.  
+The model is not capable, in general, of providing accurate joint angles as the camera image does not provide enough information to infer the precise position of the joints and the model intrinsically has inference limitations and errors. Asking for an estimate of the joint angles error is not a well posed question, as:
+- a proper formal definition of the keypoints would be required, but the geometrical internal structure of subjects is not obtainable from the image and also clothing and other factors may change the appearance of the subject figure in the image.
+- the uncertainties and errors depends on the specific pose and conditions of both the subject and the lighting-camera setup. Given this, [^articolo-mediapipe-young] provides some order of magnitude of the errors for the joint angles, which were in the order of 10 deg (cfr. [^articolo-mediapipe-young] §4.1 Table 2), but we prove that the errors can be much smaller for our specific use case.
+
+Out goal is to provide some statistically meaningful estimates for the uncertainties on the metrics computed by the software.  
+The set of computed parameters may change in the future developments of the software, but some of them are the core of the ??? and are simple to define and compare with more accurate methods:
+- shoulder tilt (or roll?) angle
+- head tilt angle
+- neck horizontal displacement
+Other parameters may be added and investigated with further developments of the software and model.
+
+To estimate the errors, reference measures are needed through the use of systems for which we are able to provide a correct estimate of the errors and, possibly, are more accurate than the software measures we want to investigate.
+
+Two reference systems were used to provide the reference measures:
+- a 9-DOF IMU sensor (NOME)
+- a 3D stereo motion capture system
+
+## IMU sensor WT9011DCL-BTL5.0
+
+Our choice for the IMU sensor is a _Wit BWT901_ series module [^wit-sensor] with 9-DOF which, according to the datasheet [^wit-datasheet], it measures tilt angles with an accuracy of 0.05°. The sensor provides a calibration functionality that we use before each test in order to reduce drift related errors and uses a Kalman filter [^wit-datasheet] that combines the readings of the accelerometer, gyroscope and magnetometer sensor into a 3d orientation (or tilt angle??).  
+Given the accuracy of the tilt angle is 0.05°, we suppose that the actual dominant error from this sensing method will be due to anchoring lash and skin deformation under the adhesive.
+
+If only the sensor error is considered, we see that this error will certainly be smaller than the measures we can perform from the image analysis.  
+In fact, the pre-trained pose landmarker model accepts an input image with shape $256 \times 256 \times 3$. The best case scenario for angle measurements is the shoulder angle, since it represents the biggest visible segment in the body, when (typically) half of the available image width is taken by the shoulders. In this case we get that a movement of 0.05° results in a movement on the image of $$ 128 \, \pi \, 0.05/180 \approx 0.1 \, \text{px} $$, i.e. a sub-pixel movement.
+
+Since the sensor filter is a black-box and we do not know the actual implementation, we will also verify the correctness of the provided tilt angles by comparing them with the angle computed from the rad accelerometer measures. In fact, the BWT901 module provides acceleration with a standard deviation of $\sigma = 0.01g$ [^wit-datasheet], this gives a variance an the estimated angle of $$\sigma_\alpha \approx \sigma / g_T \approx 0.058 ^\circ$$ where $g_T$ is the terrestrial gravity acceleration constant. This error has a low time correlation (order of milliseconds), but we can retrieve high frequency reading of this value (up to 200 Hz) and then smoothing over the relevant time period. This virtually cancels this kind of error and the dominant error is the non-linearity of the accelerometer which is 0.5% nominally [^mpu-datasheet].
+
+We conclude that the readings of this sensor are suitable for this application, and the main source of error will be anchoring and skin deformation.
+
+## 3D stereo motion capture system
+
+<figure id="fig:stereo-system">
+  <img src="/projects/vdu-validation/stereo-system.jpg" alt="3D stereo motion capture system"/>
+  <figcaption>Figure 1: The stereo motion capture system used in the experiments, composed of two industrial cameras for the 3D marker tracking and an high resolution smartphone camera for back skin movement tracking (see [Appendix B](#back-skin-movement)).</figcaption>
+</figure>
+
+This system allows to track both the 3D position of a number of markers applied on the subject and the movement of his back skin.  
+Due to the excessive cost of this instrumentation on the market, we created our own system consisting of two industrial cameras (HikRobot MV-CE060-10UM and iCube NS1500CU) with fixed optics for 3D marker tracking and a smartphone as higher resolution non-fixed optics for skin movement analysis (see [Appendix B](#back-skin-movement)).  
+A description of the marker tracking procedure and error analysis is presented in section [Appendix C](#marker-tracking).
+
+# Data comparison
+
+### Early experiments
+
+In the early test we performed, we tried to get an estimate of how accurate our shoulder angle measure was.  
+To do this, we tried placed the IMU sensor approximately on the C7 and T1 vertebrae of the subject using a kinesiology tape.
+
+Typical results are shown in [Figure 2](#fig:confronto-1).
+<figure id="fig:confronto-1">
+  <img src="/projects/vdu-validation/confronto-1.png"/>
+  <figcaption>Figure 2: Comparison of the data provided by the IMU sensor placed on T1 and the data provided by our software.</figcaption>
+</figure>
+
+<figure id="fig:confronto-2">
+  <img src="/projects/vdu-validation/confronto-2.png"/>
+  <figcaption>Figure 3: (left) Comparison of the data provided by the IMU sensor placed on C7 and the data provided by our software.</figcaption>
+</figure>
+
+In all the analyzed test cases, the provided angle was systematically underestimated by the software but also an important and inconsistent non-linearity was observed (an example can be seen in figure).
+
+Two hypotheses were formulated to explain the observed behavior:
+- The model is not able to correctly infer the position of the shoulder joint, which is not directly visible in the image.
+- The IMU sensor is not giving a correct measure of the shoulder angle.
+
+To investigate the first hypothesis, we tried to perform a visual check of the key points, an example is shown in [Figure 4](#fig:angolo-errato).
+<figure id="fig:angolo-errato">
+  <img src="/projects/vdu-validation/angolo-errato-2.png"/>
+  <figcaption>Figure 4: Visual representation of the line connecting the shoulder key points provided by MediaPipe (green line) and the one connecting the upper points of the shoulders (red line).</figcaption>
+</figure>
+As [Figure 4](#fig:angolo-errato) shows, the angle obtained using the shoulder key points provided by the MediaPipe library (green line), looks noticeably smaller than what we would visually expect, which is better represented by the angle defined by the upper position of the shoulder extremities (red line). For small angles though, we intuitively do not expect a large non-linearity from this inconsistency though, so we also investigated the second hypothesis.  
+Given this observation, we decided to use this latter method to estimate the shoulder angle with greater precision by combining both the key points and the segmentation mask provided by MediaPipe[^mediapipe-pose-guide] in order to consistently identify the upper points of the shoulders.
+
+By visually inspecting and palpating the skin where the sensor was placed, we found that it tilts and stretches differently depending on the movement performed by the subject.
+
+<figure id="fig:skew-guess">
+  <img src="/projects/vdu-validation/skew-guess.png" alt="Diagram of the hypothesized skin deformation during different shoulder movements"/>
+  <figcaption>Figure 5: Hypothesized skin deformation in different positions, later confirmed by the back-skin-movement analysis.</figcaption>
+</figure>
+
+We concluded that variation in the skin’s skew was likely the main cause of the non-linearity observed in the early measurements. This meant improving the shoulder-angle estimation algorithm and finding a better reference system.
+
+## Experiments with the stereo system
+
+In order to get more accurate reference measures, we decided to place markers on the subject and use a 3D stereo motion-capture system. As we did not own such a system, we developed our own system composed of two industrial cameras, shown in [Figure 1](#fig:stereo-system). The target workflow was to capture a calibration plate with roughly a size and position similar to the subject, and then take images of the subject with markers placed on the back of the shoulders.
+
+The first tests were related to back-skin movement, aimed at finding the best positioning for the markers. The procedure is described in [Back skin movement](#back-skin-movement), where we found that a reasonably good marker placement is the back side of the scapula.
+
+Each marker consisted of two magnets: one was attached to the skin and the other sat above the shirt. This prevented the marker from following the shirt while still allowing it to follow movements of the back.
+
+<figure id="fig:markers">
+  <img src="/projects/vdu-validation/markers.jpg" alt="Reflective markers attached to a subject's back"/>
+  <figcaption>Figure 6: Markers as seen by one of the stereo cameras.</figcaption>
+</figure>
+
+We then proceeded with tests consisting of recordings of the subject during lateral shoulder tilt, and also some realistic scenarios where the subject maintained a static position.
+
+## Shoulder comparison results
+
+We analysed the images captured by the stereo system in order to create a 3D tracking of the markers during the trials. This tracking is used to extract an accurate measure of the actual shoulder angle as described in [Marker tracking](#marker-tracking).
+
+<figure id="fig:3d-tracking">
+  <img src="/projects/vdu-validation/3d.png" alt="Three-dimensional reconstruction of tracked shoulder markers"/>
+  <figcaption>Figure 7: Three-dimensional view of the markers tracked by the cameras.</figcaption>
+</figure>
+
+<figure id="fig:3d-tracking-video">
+  <video controls preload="metadata" playsinline>
+    <source src="/projects/vdu-validation/3d.mp4" type="video/mp4" />
+    Your browser does not support embedded video.
+  </video>
+  <figcaption>Figure 8: Three-dimensional playback of the marker tracking.</figcaption>
+</figure>
+
+We aligned the marker-tracking and software signals using the correlation-based procedure described in [Data synchronization](#data-synchronization).
+
+<figure id="fig:shoulder-comparison">
+  <img src="/projects/vdu-validation/sovrapposto_1.png" alt="Overlaid shoulder-angle measurements from stereo tracking and the software"/>
+  <figcaption>Figure 9: Comparison of angles from the 3D marker tracking and the software.</figcaption>
+</figure>
+
+<figure id="fig:shoulder-scatter">
+  <img src="/projects/vdu-validation/Figure_4.png" alt="Scatter plot comparing stereo-tracked and software-predicted shoulder angles"/>
+  <figcaption>Figure 10: Scatter plot of the tracked and predicted shoulder angles. The orange line is a least-squares linear fit, included as a visual reference.</figcaption>
+</figure>
+
+Compared to the early experiments, we now notice visually good correspondence between the predicted shoulder angle and the value measured by the stereo system.
+
+## Head comparison results
+
+For the head-tilt tests we used the IMU sensor, because the head does not introduce the same skin-deformation issue as the upper back. We placed the sensor first on C7 and then on the occipital bone, and repeated the lateral-tilt tests.
+
+<figure id="fig:head-fit-c7">
+  <img src="/projects/vdu-validation/head_fit_c7.png" alt="Comparison of software angle measurements with an IMU positioned at C7"/>
+  <figcaption>Figure 11: Comparison with the IMU placed at C7.</figcaption>
+</figure>
+
+The C7 comparison produced a least-squares proportionality factor of 2.4 rather than the ideal 1. This is expected: the IMU measures the C7 angle, while the software estimates head tilt.
+
+<figure id="fig:head-fit">
+  <img src="/projects/vdu-validation/head_fit.png" alt="Comparison of software angle measurements with an IMU on the back of the head"/>
+  <figcaption>Figure 12: Comparison with the IMU placed on the back of the head.</figcaption>
+</figure>
+
+With the IMU on the head, the least-squares proportionality factor was 0.8 for small angles. A correction factor could therefore compensate for this bias in software. Agreement decreased for larger angles (about 20–30°), where non-linear effects became evident; in the intended use case, these angles would already be classified as poor posture.
+
+# Statistical analysis
+
+We performed a linear least-squares fit on the overlapped data obtained from the shoulder comparison and found a proportionality factor in the range 0.95–1.07, against an expected value of 1. This means that the proportionality factor in our tests was in the expected range, with a variation of approximately 5°. The fit residuals showed a standard deviation in the order of 0.5° (with a maximum of 1.5° across the tests).
+
+We performed the same analysis for the head data and found a proportionality factor for small angles of about 0.8 which, as previously noted, can be corrected in the software. The residuals’ standard deviation is 2°.
+
+We finally computed the autocorrelation for the residuals in both cases in order to understand how the error of a single measure is influenced by previous values. This is crucial since large autocorrelation times would mean that measures close in time give essentially the same amount of information.
+
+<figure id="fig:shoulder-autocorrelation">
+  <img src="/projects/vdu-validation/autocorr_res_spalle.png" alt="Autocorrelation function of shoulder-angle residuals"/>
+  <figcaption>Figure 13: Example autocorrelation function of predicted shoulder angles smoothed with a 10-second rectangular window.</figcaption>
+</figure>
+
+Computing the correlations, we observed that the half-width at half-maximum of the autocorrelation functions is less than 0.1 s for shoulder angles, using the measurements from the segmentation mask, and less than 0.25 s for head angles. This is desirable, as such small autocorrelation times mean that the software can effectively average several measures in order to reduce stochastic errors before evaluating whether the angles accord with the safety ranges.
+
+We believe these results to be satisfactory, as the errors are likely to be negligible in the context of detecting incorrect posture. However, to obtain a formal estimate of sensitivity and specificity, we need a prior distribution estimate that we do not have. We plan to perform tests on a wider range of subjects in order to obtain information on this distribution and provide an estimate for these parameters.
+
+# Discussion
+
+Our study marks a turning point in the prevention of musculoskeletal disorders by introducing an innovative, simple, repeatable, and scalable software solution. This tool not only reduces biases associated with traditional assessment methods but also represents a significant step towards a practical and widespread approach to preventing posture-related conditions. The unobtrusive observation of subjects during their daily computer use allows for the capture of authentic and spontaneous postural behaviours, eliminating potential distortions that might arise in a controlled laboratory environment.
+
+A distinctive aspect of our approach is the analysis of posture during the subject's regular working hours. The reduction in self-correction when subjects are unaware they are being observed provides genuine insight into daily postural habits, overcoming the limitations of assessments conducted in controlled settings. The link between sedentary behaviour, postural alterations, and the development of musculoskeletal disorders is well documented. Our software acts as a preventive tool by timely intervention to correct poor posture and reduce the risks of long-term musculoskeletal issues.[^IASP]
+
+Traditional prevention campaigns often face challenges such as difficulty accessing biomechanics laboratories and errors induced by the subject's familiar environment. Our software allows for accurate and repeatable assessment directly within the user's everyday context, without the need for travel or unfamiliar settings. Our methodology differs from laboratory assessments, where subjects often maintain more appropriate postures during observation. By using our software during daily activities, we provide a more realistic and meaningful analysis of postural habits, enhancing the external validity and applicability of the results to everyday life.
+
+Our study not only opens new avenues for preventing musculoskeletal disorders but also offers a replicable and adaptable model for future research in this field.
+
+# Conclusion
+
+The joint angles related to various body segments used as validation parameters in this study, aimed at preventing musculoskeletal issues during work activities, are in accordance with the UNI ISO 11226 and ISO 9355-2 standards.[^ISO-11226][^ISO-9355-2] This study will require further validation to confirm the software's efficacy, showcasing its potential not only in the field of prevention but also potentially in other areas of medicine in the future.
+
+# Appendices
+
+## Data synchronization
+
+The video analysis and the reference system had no shared time reference. Rather than induce abrupt movements to create synchronization spikes, we aligned the signals by computing their correlation at different time offsets and selecting the offset with the greatest correlation:
+
+$$
+\text{offset} = \arg \max_{t_o}\operatorname{corr}(A(t+t_o), B(t)),
+$$
+
+where $A$ is the video-analysis signal and $B$ is the accelerometer or marker-tracking signal.
+
+## Back-skin movement
+
+To investigate the suspected skin motion, we recorded a shoulder-tilt trial with the high-resolution smartphone camera. OpenCV optical flow tracked points on the skin; a Delaunay triangulation of the initial points was then followed over the video.[^opencv-optical-flow]
+
+<figure id="fig:back-delaunay">
+  <img src="/projects/vdu-validation/back-delaunay.png" alt="Delaunay triangulation over points tracked on a subject's back"/>
+  <figcaption>Figure 14: Delaunay triangulation of the tracked back-skin points.</figcaption>
+</figure>
+
+The subject attempted both a rigid tilt of the torso, shoulders, and head, and a shoulder tilt with the head and back held still. The observed deformation confirmed the suspected skew: an IMU attached in this region is not necessarily representative of the underlying shoulder tilt.
+
+<figure id="fig:skew-comparison">
+  <img src="/projects/vdu-validation/skew-comparison.png" alt="Comparison of hypothesized and observed back-skin skew during shoulder movement"/>
+  <figcaption>Figure 15: Comparison of the hypothesized skin skew with tracked frames from the test.</figcaption>
+</figure>
+
+<figure id="fig:real-skew">
+  <img src="/projects/vdu-validation/real-skew.png" alt="Tracked back skin showing skew during shoulder movement"/>
+  <figcaption>Figure 16: Back-skin skew during shoulder movement; this tension can affect tape supporting an IMU.</figcaption>
+</figure>
+
+<figure id="fig:skin-video">
+  <video controls preload="metadata" playsinline>
+    <source src="/projects/vdu-validation/skin.mp4" type="video/mp4" />
+    Your browser does not support embedded video.
+  </video>
+  <figcaption>Figure 17: Video analysis of the back-skin movement during shoulder tilt.</figcaption>
+</figure>
+
+## Marker placement
+
+The stereo system required markers on the subject’s back so that they would not be visible to the webcam and influence the pose model. There is no single, unambiguous definition of shoulder tilt because the scapular complex does not move as a rigid body.[^scapula-animation]
+
+<figure id="fig:marker-placement">
+  <img src="/projects/vdu-validation/0110-r2.jpg" alt="Tracked back-skin points illustrating alternative marker locations"/>
+  <figcaption>Figure 18: Different tracked locations on the back can yield angle differences of roughly 5°. The black marks indicate the approximate marker positions selected for the tests.</figcaption>
+</figure>
+
+Markers near the spine were subject to the same soft-tissue effects as the IMU, while points at the outer shoulder could translate appreciably relative to the shoulder. We therefore adopted an intermediate location, approximately halfway across the shoulder width. The magnetic attachment minimized shirt motion but introduced its own soft-tissue uncertainty, which was not quantified separately.
+
+## Marker tracking
+
+The motion-capture system used two cameras focused on the subject’s working area. Before each capture session—and whenever the rig was moved—we calibrated the cameras using a static reference grid captured in multiple orientations. The calibration estimates the cameras’ intrinsic and extrinsic parameters.
+
+<figure id="fig:stereo-calibration">
+  <img src="/projects/vdu-validation/stereo-calibration.png" alt="Stereo-camera views of the calibration grid"/>
+  <figcaption>Figure 19: Representative views of the calibration grid captured by the two cameras.</figcaption>
+</figure>
+
+The recorded image pairs were later analysed to locate the markers and triangulate their three-dimensional positions. Typical average reprojection error was about one pixel, which was considered negligible relative to the pose-model and soft-tissue uncertainties discussed above.
+
+[^articolo-eurostat]: <Cite bibliography={refs} id="articolo-eurostat" />
+[^WHO]: <Cite bibliography={refs} id="WHO" />
+[^IASP]: <Cite bibliography={refs} id="IASP" />
+[^vdu]: <Cite bibliography={refs} id="vdu" />
+[^articolo-mediapipe-young]: <Cite bibliography={refs} id="articolo-mediapipe-young" />
+[^wit-sensor]: <Cite bibliography={refs} id="wit-sensor" />
+[^wit-datasheet]: <Cite bibliography={refs} id="wit-datasheet" />
+[^mediapipe-pose-guide]: <Cite bibliography={refs} id="mediapipe-pose-guide" />
+[^mpu-datasheet]: <Cite bibliography={refs} id="mpu-datasheet" />
+[^opencv-optical-flow]: <Cite bibliography={refs} id="opencv-optical-flow" />
+[^scapula-animation]: <Cite bibliography={refs} id="scapula-animation" />
+[^ISO-11226]: <Cite bibliography={refs} id="ISO-11226" />
+[^ISO-9355-2]: <Cite bibliography={refs} id="ISO-9355-2" />
