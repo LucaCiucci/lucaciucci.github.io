@@ -111,3 +111,6 @@ projects:
   description: A browser-based MediaPipe prototype for measuring cycling posture from a camera or video.
   href: /apps/bicycle-posture-analyzer/index.html
   tags: [Computer vision, MediaPipe, Web app]
+
+
+# TODO schlieren!
