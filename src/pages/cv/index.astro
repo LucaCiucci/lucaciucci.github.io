@@ -14,12 +14,21 @@ const meta = {
   image: `/cv-assets/${cv.portrait}`,
   image_alt: cv.name,
 };
+
+const headings = [
+  { depth: 1, slug: 'main-interests', text: 'Main interests' },
+  { depth: 1, slug: 'work-experience', text: 'Work experience' },
+  { depth: 1, slug: 'publications', text: 'Publications' },
+  { depth: 1, slug: 'education', text: 'Education' },
+  { depth: 1, slug: 'educational-projects', text: 'Educational projects' },
+];
 ---
 <MainLayout
   title="Luca Ciucci — Curriculum Vitae"
   show_page_nav={true}
   heading_depth={1}
   meta={meta}
+  headings={headings}
 >
   <CvHero
     name={cv.name}
@@ -32,7 +41,7 @@ const meta = {
     pdf="/cv.pdf"
   />
 
-  <h1>Main interests</h1>
+  <h1 id="main-interests">Main interests</h1>
 
   <p class="cv-section-intro">{cv.interests.intro}</p>
 
@@ -40,19 +49,19 @@ const meta = {
     {cv.interests.groups.map((group: any) => <InterestCard {...group} />)}
   </div>
 
-  <h1>Work experience</h1>
+  <h1 id="work-experience">Work experience</h1>
 
   <WorkExperienceList entries={cv.work_experience} />
 
-  <h1>Publications</h1>
+  <h1 id="publications">Publications</h1>
 
   <PublicationList publications={publications} />
 
-  <h1>Education</h1>
+  <h1 id="education">Education</h1>
 
   <Timeline entries={cv.education} imageBasePath="/cv-assets/" />
 
-  <h1>Educational projects</h1>
+  <h1 id="educational-projects">Educational projects</h1>
 
   <Timeline entries={cv.educational_projects} imageBasePath="/cv-assets/" />
 </MainLayout>
