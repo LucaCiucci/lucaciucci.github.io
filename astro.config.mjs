@@ -13,7 +13,9 @@ import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
 const processor = unified({
+  remarkPlugins: [remarkMath],
   rehypePlugins: [
+    rehypeKatex,
     rehypeSlug,
     [
       rehypeAutolinkHeadings,
@@ -33,8 +35,6 @@ export default defineConfig({
   integrations: [mdx(), icon(), sitemap()],
   markdown: {
     processor,
-    remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeKatex],
   },
   vite: {
     plugins: [yaml()],
