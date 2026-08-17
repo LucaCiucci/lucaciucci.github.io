@@ -17,7 +17,7 @@ const meta = {
 
 const headings = [
   { depth: 1, slug: 'main-interests', text: 'Main interests' },
-  { depth: 1, slug: 'work-experience', text: 'Work experience' },
+  { depth: 1, slug: 'work-experience', text: 'Professional experience' },
   { depth: 1, slug: 'publications', text: 'Publications' },
   { depth: 1, slug: 'education', text: 'Education' },
   { depth: 1, slug: 'educational-projects', text: 'Educational projects' },
@@ -49,7 +49,7 @@ const headings = [
     {cv.interests.groups.map((group: any) => <InterestCard {...group} />)}
   </div>
 
-  <h1 id="work-experience">Work experience</h1>
+  <h1 id="work-experience">Professional experience</h1>
 
   <WorkExperienceList entries={cv.work_experience} />
 
